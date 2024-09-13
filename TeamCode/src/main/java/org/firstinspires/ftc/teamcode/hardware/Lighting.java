@@ -53,7 +53,7 @@ public class Lighting extends BaseHardware {
      * The op mode name should be unique. It will be the name displayed on the driver station. If
      * multiple op modes have the same name, only one will be available.
      */
-    /*public Swing_Arm_And_Lift() {
+    /* public Swing_Arm_And_Lift() {
 
     }*/
 

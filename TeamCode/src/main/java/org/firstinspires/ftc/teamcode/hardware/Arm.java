@@ -128,39 +128,94 @@ public class Arm extends BaseHardware {
 
                 break;
             case CLIMB:
-                armTargetPos = CommonLogic.CapValueint(Mode.CLIMB.Pos, minArmPos,maxArmPos);
+                armTargetPos = CommonLogic.CapValueint(Mode.CLIMB.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.CLIMB.ArmP;
+                ARMHOLDPOWER = Mode.CLIMB.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.CLIMB.ExtPos, Mode.CLIMB.ExtPos,Mode.CLIMB.ExtMax);
+                extPValue = Mode.CLIMB.ExtP;
+                EXTHOLDPOWER = Mode.CLIMB.ExtF;
 
                 break;
             case PICKUP_TANK:
-                armTargetPos = CommonLogic.CapValueint(Mode.PICKUP_TANK.Pos, minArmPos,maxArmPos);
+                armTargetPos = CommonLogic.CapValueint(Mode.PICKUP_TANK.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.PICKUP_TANK.ArmP;
+                ARMHOLDPOWER = Mode.PICKUP_TANK.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.PICKUP_TANK.ExtPos, Mode.PICKUP_TANK.ExtPos,Mode.PICKUP_TANK.ExtMax);
+                extPValue = Mode.PICKUP_TANK.ExtP;
+                EXTHOLDPOWER = Mode.PICKUP_TANK.ExtF;
+
 
                 break;
             case PICKUP_WALL:
-                armTargetPos = CommonLogic.CapValueint(Mode.PICKUP_WALL.Pos, minArmPos,maxArmPos);
+                armTargetPos = CommonLogic.CapValueint(Mode.PICKUP_WALL.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.PICKUP_WALL.ArmP;
+                ARMHOLDPOWER = Mode.PICKUP_WALL.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.PICKUP_WALL.ExtPos, Mode.PICKUP_WALL.ExtPos,Mode.PICKUP_WALL.ExtMax);
+                extPValue = Mode.PICKUP_WALL.ExtP;
+                EXTHOLDPOWER = Mode.PICKUP_WALL.ExtF;
 
                 break;
             case PICKUP_GROUND:
-                armTargetPos = CommonLogic.CapValueint(Mode.PICKUP_GROUND.Pos, minArmPos,maxArmPos);
+                armTargetPos = CommonLogic.CapValueint(Mode.PICKUP_GROUND.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.PICKUP_GROUND.ArmP;
+                ARMHOLDPOWER = Mode.PICKUP_GROUND.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.PICKUP_GROUND.ExtPos, Mode.PICKUP_GROUND.ExtPos,Mode.PICKUP_GROUND.ExtMax);
+                extPValue = Mode.PICKUP_GROUND.ExtP;
+                EXTHOLDPOWER = Mode.PICKUP_GROUND.ExtF;
 
                 break;
             case DELIVER_TO_LOW_BASKET:
-                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_LOW_BASKET.Pos, minArmPos,maxArmPos);
+                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_LOW_BASKET.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.DELIVER_TO_LOW_BASKET.ArmP;
+                ARMHOLDPOWER = Mode.DELIVER_TO_LOW_BASKET.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_LOW_BASKET.ExtPos, Mode.DELIVER_TO_LOW_BASKET.ExtPos,Mode.DELIVER_TO_LOW_BASKET.ExtMax);
+                extPValue = Mode.DELIVER_TO_LOW_BASKET.ExtP;
+                EXTHOLDPOWER = Mode.DELIVER_TO_LOW_BASKET.ExtF;
 
                 break;
             case DELIVER_TO_HIGH_BASKET:
-                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET.Pos, minArmPos,maxArmPos);
+                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.DELIVER_TO_HIGH_BASKET.ArmP;
+                ARMHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET.ExtPos, Mode.DELIVER_TO_HIGH_BASKET.ExtPos,Mode.DELIVER_TO_HIGH_BASKET.ExtMax);
+                extPValue = Mode.DELIVER_TO_HIGH_BASKET.ExtP;
+                EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET.ExtF;
 
                 break;
             case DELIVER_TO_LOW_CHAMBER:
-                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_LOW_CHAMBER.Pos, minArmPos,maxArmPos);
+                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_LOW_CHAMBER.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.DELIVER_TO_LOW_CHAMBER.ArmP;
+                ARMHOLDPOWER = Mode.DELIVER_TO_LOW_CHAMBER.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_LOW_CHAMBER.ExtPos, Mode.DELIVER_TO_LOW_CHAMBER.ExtPos,Mode.DELIVER_TO_LOW_CHAMBER.ExtMax);
+                extPValue = Mode.DELIVER_TO_LOW_CHAMBER.ExtP;
+                EXTHOLDPOWER = Mode.DELIVER_TO_LOW_CHAMBER.ExtF;
 
                 break;
             case DELIVER_TO_OBSERVATION:
-                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_OBSERVATION.Pos, minArmPos,maxArmPos);
+                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_OBSERVATION.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.DELIVER_TO_OBSERVATION.ArmP;
+                ARMHOLDPOWER = Mode.DELIVER_TO_OBSERVATION.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_OBSERVATION.ExtPos, Mode.DELIVER_TO_OBSERVATION.ExtPos,Mode.DELIVER_TO_OBSERVATION.ExtMax);
+                extPValue = Mode.DELIVER_TO_OBSERVATION.ExtP;
+                EXTHOLDPOWER = Mode.DELIVER_TO_OBSERVATION.ExtF;
 
                 break;
             case DELIVER_TO_HIGH_CHAMBER:
-                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_CHAMBER.Pos, minArmPos,maxArmPos);
+                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_CHAMBER.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.DELIVER_TO_HIGH_CHAMBER.ArmP;
+                ARMHOLDPOWER = Mode.DELIVER_TO_HIGH_CHAMBER.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_CHAMBER.ExtPos, Mode.DELIVER_TO_HIGH_CHAMBER.ExtPos,Mode.DELIVER_TO_HIGH_CHAMBER.ExtMax);
+                extPValue = Mode.DELIVER_TO_HIGH_CHAMBER.ExtP;
+                EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_CHAMBER.ExtF;
 
                 break;
             default:

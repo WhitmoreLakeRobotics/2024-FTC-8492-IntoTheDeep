@@ -258,7 +258,7 @@ private enum Mode{
     DELIVER_TO_LOW_BASKET(35,50,0,0,50,0,5),
     DELIVER_TO_HIGH_BASKET(40,50,0,0,50,0,5),
     CLIMB(45,50,0,0,50,0,5),
-    STOP(0,1000000,0,0,10000000,0,5);
+    STOP(0,1000000000,0,0,10000000,0,5);
 
    private int ArmPos;
    private int ArmP;

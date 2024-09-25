@@ -44,6 +44,7 @@ public class Arm extends BaseHardware {
     private int extTargetPos = 0;
 
 
+    private double extStepSize = 10.0
 
     /**
      * Hardware Mappings
@@ -247,6 +248,14 @@ public void setCurrentMode(){
         //update to recieve and set mode
 }
 
+
+public void updateExtension(double updateTarget){
+        //multiply update target by some amount then add to target pos.
+        //wrap set value in cap
+    int nTarget = extTargetPos + (updateTarget * extStepSize);
+    extTargetPos = CommonLogic.CapValueint(nTarget,CurrentMode.ExtPos,CurrentMode.ExtMax);
+}
+
 private enum Mode{
    START(0,50,0,0,50,0,5),
     PICKUP_TANK(5,50,0,0,50,0,5),
@@ -258,7 +267,7 @@ private enum Mode{
     DELIVER_TO_LOW_BASKET(35,50,0,0,50,0,5),
     DELIVER_TO_HIGH_BASKET(40,50,0,0,50,0,5),
     CLIMB(45,50,0,0,50,0,5),
-    STOP(0,1000000000,0,0,10000000,0,5);
+    STOP(0,2100000000,0,0,2100000000,0,5);
 
    private int ArmPos;
    private int ArmP;

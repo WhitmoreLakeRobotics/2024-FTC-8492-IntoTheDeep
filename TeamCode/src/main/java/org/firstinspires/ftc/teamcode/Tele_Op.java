@@ -45,6 +45,7 @@ public class Tele_Op extends OpMode {
     private double RightMotorPower = 0;
     private boolean gp2_prev_start = false;
     private int tHeading = 0;
+    private boolean bAutoTurn = false;
 
 
     //*********************************************************************************************
@@ -116,9 +117,13 @@ public class Tele_Op extends OpMode {
         robot.loop();
         write2Log();
         tHeading = getTurnDirection();
+        bAutoTurn = gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y;
+        if (Math.abs (gamepad1.right_stick_x) > 0.05){
+            bAutoTurn = false;
+        }
 
         //***********   Gamepad 1 controls ********
-        if (gamepad1.right_trigger < 0.6){
+        if (bAutoTurn){
             if (gamepad1.right_bumper) {
                 robot.driveTrain.cmdTeleOp(CommonLogic.joyStickMath(gamepad1.left_stick_y * -1),
                         CommonLogic.joyStickMath(gamepad1.left_stick_x),

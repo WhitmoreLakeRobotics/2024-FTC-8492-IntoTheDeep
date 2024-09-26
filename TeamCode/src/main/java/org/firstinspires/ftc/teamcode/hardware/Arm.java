@@ -44,7 +44,7 @@ public class Arm extends BaseHardware {
     private int extTargetPos = 0;
 
 
-    private double extStepSize = 10.0
+    private double extStepSize = 10.0;
 
     /**
      * Hardware Mappings
@@ -89,6 +89,9 @@ public class Arm extends BaseHardware {
      * This method is optional. By default this method takes no action.
      */
      public void init_loop() {
+
+         telemetry.addData("AM1 ", AM1.getCurrentPosition());
+         telemetry.addData("EM1 ", EM1.getCurrentPosition());
      }
 
     /**
@@ -252,7 +255,7 @@ public void setCurrentMode(){
 public void updateExtension(double updateTarget){
         //multiply update target by some amount then add to target pos.
         //wrap set value in cap
-    int nTarget = extTargetPos + (updateTarget * extStepSize);
+    int nTarget = (int) (extTargetPos + (updateTarget * extStepSize));
     extTargetPos = CommonLogic.CapValueint(nTarget,CurrentMode.ExtPos,CurrentMode.ExtMax);
 }
 

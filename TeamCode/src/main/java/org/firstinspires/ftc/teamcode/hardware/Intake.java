@@ -78,8 +78,8 @@ public class Intake extends BaseHardware {
      */
     public void init_loop() {
         telemetry.addData("NTKCRS1 ", NTKCRS1.getDistance(DistanceUnit.CM));
-        telemetry.addData("NTKCRS1-blue ", NTKCRS1.blue());
         telemetry.addData("NTKCRS1-red ", NTKCRS1.red());
+        telemetry.addData("NTKCRS1-blue ", NTKCRS1.blue());
         telemetry.addData("NTKCRS1-green ", NTKCRS1.green());
     }
 

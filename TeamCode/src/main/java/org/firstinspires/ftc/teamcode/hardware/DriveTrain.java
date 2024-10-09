@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -118,9 +119,9 @@ public class DriveTrain extends BaseHardware {
             telemetry.log().add("RDM2 is null...");
         }
 
-        LDM1.setDirection(DcMotor.Direction.FORWARD);
+        LDM1.setDirection(DcMotor.Direction.REVERSE);
         LDM2.setDirection(DcMotor.Direction.REVERSE);
-        RDM1.setDirection(DcMotor.Direction.FORWARD);
+        RDM1.setDirection(DcMotor.Direction.REVERSE);
         RDM2.setDirection(DcMotor.Direction.FORWARD);
 
         LDM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

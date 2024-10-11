@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.common.CommonLogic;
 import org.firstinspires.ftc.teamcode.common.Settings;
+import org.firstinspires.ftc.teamcode.hardware.Arm;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 
@@ -262,18 +263,21 @@ public class Tele_Op extends OpMode {
 
 
         if (CommonLogic.oneShot(gamepad2.a, gp2_prev_a)) {
+            robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_LOW_BASKET);
         }
 
         if (CommonLogic.oneShot(gamepad2.b, gp2_prev_b)) {
+            robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_LOW_CHAMBER);
         }
 
         if (CommonLogic.oneShot(gamepad2.y, gp2_prev_y)) {
-
+            robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_CHAMBER);
 //            robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
             //robot.subExtender.incPositionIndex();
         }
 
         if (CommonLogic.oneShot(gamepad2.x, gp2_prev_x)) {
+            robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_BASKET);
         }
 
         //robot.swing_arm_and_lift.SwingPos(robot.swing_arm_and_lift.LASTSWINGPOSITION + (int)(gamepad2.left_stick_x) * 5);
@@ -293,15 +297,19 @@ public class Tele_Op extends OpMode {
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_up, gp2_prev_dpad_up)) {
+            robot.arm.setCurrentMode(Arm.Mode.START);
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_down, gp2_prev_dpad_down)) {
+            robot.arm.setCurrentMode(Arm.Mode.PICKUP_GROUND);
         }
         if (CommonLogic.oneShot(gamepad2.dpad_right, gp2_prev_dpad_right)) {
+            robot.arm.setCurrentMode(Arm.Mode.PICKUP_TANK);
         //    robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_left, gp2_prev_dpad_left)) {
+            robot.arm.setCurrentMode(Arm.Mode.PICKUP_WALL);
   //          robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.ORANGE);
         }
 

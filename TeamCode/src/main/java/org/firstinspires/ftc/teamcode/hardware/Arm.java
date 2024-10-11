@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -32,14 +33,14 @@ public class Arm extends BaseHardware {
     private static final double ARMSPEED = 0.40;
     private double ARMHOLDPOWER =0.00;
     private static final int minArmPos = 0;
-    private static final int maxArmPos = 1000;
+    private static final int maxArmPos = 4370;
     private int armPValue = 50;
     private int armTargetPos = 0;
 
     private static final double EXTSPEED = 0.40;
     private double EXTHOLDPOWER =0.00;
     private static final int minExtPos = 0;
-    private static final int maxExtPos = 1000;
+    private static final int maxExtPos = 1180;
     private int extPValue = 50;
     private int extTargetPos = 0;
 
@@ -69,13 +70,13 @@ public class Arm extends BaseHardware {
      */
     public void init(){
         AM1 = hardwareMap.dcMotor.get("AM1");
-        AM1.setDirection(DcMotor.Direction.REVERSE);
+        AM1.setDirection(DcMotor.Direction.FORWARD);
         AM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         AM1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         AM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         EM1 = hardwareMap.dcMotor.get("EM1");
-        EM1.setDirection(DcMotor.Direction.REVERSE);
+        EM1.setDirection(DcMotor.Direction.FORWARD);
         EM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         EM1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         EM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -247,8 +248,9 @@ public class Arm extends BaseHardware {
 
 }
 
-public void setCurrentMode(){
+public void setCurrentMode(Mode otherMode ){
         //update to recieve and set mode
+CurrentMode = otherMode;
 }
 
 
@@ -259,16 +261,16 @@ public void updateExtension(double updateTarget){
     extTargetPos = CommonLogic.CapValueint(nTarget,CurrentMode.ExtPos,CurrentMode.ExtMax);
 }
 
-private enum Mode{
+public enum Mode{
    START(0,50,0,0,50,0,5),
     PICKUP_TANK(5,50,0,0,50,0,5),
-    PICKUP_GROUND(10,50,0,0,50,0,5),
+    PICKUP_GROUND(74,50,0,205,50,0,210),
     PICKUP_WALL(15,50,0,0,50,0,5),
-    DELIVER_TO_OBSERVATION(20,50,0,0,50,0,5),
+    DELIVER_TO_OBSERVATION(20,50,0,0,50,0,695),
     DELIVER_TO_LOW_CHAMBER(25,50,0,0,50,0,5),
     DELIVER_TO_HIGH_CHAMBER(30,50,0,0,50,0,5),
-    DELIVER_TO_LOW_BASKET(35,50,0,0,50,0,5),
-    DELIVER_TO_HIGH_BASKET(40,50,0,0,50,0,5),
+    DELIVER_TO_LOW_BASKET(2155,50,0,771,50,0,780),
+    DELIVER_TO_HIGH_BASKET(3037,50,0,1114,50,0,1120),
     CLIMB(45,50,0,0,50,0,5),
     STOP(0,2100000000,0,0,2100000000,0,5);
 

@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.teamcode.common.CommonLogic;
 import org.firstinspires.ftc.teamcode.common.Settings;
 import org.firstinspires.ftc.teamcode.hardware.Arm;
+import org.firstinspires.ftc.teamcode.hardware.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 
@@ -298,18 +299,22 @@ public class Tele_Op extends OpMode {
 
         if (CommonLogic.oneShot(gamepad2.dpad_up, gp2_prev_dpad_up)) {
             robot.arm.setCurrentMode(Arm.Mode.START);
+            robot.intake.setCurrentMode(Intake.Mode.STOP);
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_down, gp2_prev_dpad_down)) {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_GROUND);
+            robot.intake.setCurrentMode(Intake.Mode.IN);
         }
         if (CommonLogic.oneShot(gamepad2.dpad_right, gp2_prev_dpad_right)) {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_TANK);
+            robot.intake.setCurrentMode(Intake.Mode.IN);
         //    robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_left, gp2_prev_dpad_left)) {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_WALL);
+            robot.intake.setCurrentMode(Intake.Mode.IN);
   //          robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.ORANGE);
         }
 

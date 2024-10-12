@@ -113,6 +113,9 @@ public class Arm extends BaseHardware {
      */
     public void loop(){
 
+        telemetry.addData("AM1 ", AM1.getCurrentPosition());
+        telemetry.addData("EM1 ", EM1.getCurrentPosition());
+
         AM1.setPower(CommonLogic.CapValue(
                 CommonLogic.PIDcalc(armPValue,ARMHOLDPOWER,AM1.getCurrentPosition(),armTargetPos)
                 ,-ARMSPEED,ARMSPEED));
@@ -264,7 +267,7 @@ public void updateExtension(double updateTarget){
 public enum Mode{
    START(0,50,0,0,50,0,5),
     PICKUP_TANK(5,50,0,0,50,0,5),
-    PICKUP_GROUND(74,50,0,205,50,0,210),
+    PICKUP_GROUND(160,50,0,205,50,0,210),
     PICKUP_WALL(15,50,0,0,50,0,5),
     DELIVER_TO_OBSERVATION(20,50,0,0,50,0,695),
     DELIVER_TO_LOW_CHAMBER(25,50,0,0,50,0,5),

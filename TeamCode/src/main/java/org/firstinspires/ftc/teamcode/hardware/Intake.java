@@ -32,12 +32,12 @@ public class Intake extends BaseHardware {
     private boolean cmdComplete = true;
     private Mode CurrentMode = Mode.STOP;
     private final double StopPos = 0.5;
-    private final double InPos = 0;
-    private final double OutPos = 1;
+    private final double InPos = 1;
+    private final double OutPos = 0;
 
     private Color SignalColor;
     private double NTKdistance; //in cm
-    private double PickupDistance = 3.0; //in cm
+    private double PickupDistance = 6.0; //in cm
     private double PickupDistanceTol = 1.25; //in cm
 
     private int SensorBlue;
@@ -68,6 +68,7 @@ public class Intake extends BaseHardware {
     public void init(){
         NTKS01 = hardwareMap.get(Servo.class,"NTKS01");
         NTKCRS1 = hardwareMap.get(ColorRangeSensor.class, "NTKCRS1");
+        CurrentMode = Mode.STOP;
     }
 
     /**
@@ -94,6 +95,10 @@ public class Intake extends BaseHardware {
 
     }
 
+    public void setCurrentMode(Mode newMode){
+        CurrentMode = newMode;
+    }
+
     /**
      * User defined loop method
      * <p>
@@ -102,13 +107,13 @@ public class Intake extends BaseHardware {
     public void loop(){
         switch(CurrentMode){
             case STOP:
-
+                doStop();
                 break;
             case OUT:
-
+                doOut();
                 break;
             case IN:
-
+                doIn();
                 AutoStopIntake();
                 break;
             //make case for each option
@@ -187,7 +192,7 @@ public class Intake extends BaseHardware {
     }
 
 
-    private enum Mode {
+    public enum Mode {
         IN,
         OUT,
         STOP;

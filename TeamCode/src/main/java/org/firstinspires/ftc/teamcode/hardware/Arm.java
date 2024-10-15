@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -186,14 +185,25 @@ public class Arm extends BaseHardware {
                 EXTHOLDPOWER = Mode.DELIVER_TO_LOW_BASKET.ExtF;
 
                 break;
-            case DELIVER_TO_HIGH_BASKET:
-                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET.ArmPos, minArmPos,maxArmPos);
-                armPValue = Mode.DELIVER_TO_HIGH_BASKET.ArmP;
-                ARMHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET.ArmF;
+            case DELIVER_TO_HIGH_BASKET_ARM_ONLY:
+                armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ArmP;
+                ARMHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ArmF;
 
-                extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET.ExtPos, Mode.DELIVER_TO_HIGH_BASKET.ExtPos,Mode.DELIVER_TO_HIGH_BASKET.ExtMax);
-                extPValue = Mode.DELIVER_TO_HIGH_BASKET.ExtP;
-                EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET.ExtF;
+                extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtPos, Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtPos,Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtMax);
+                extPValue = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtP;
+                EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtF;
+
+                cmdComplete = CommonLogic.inRange( AM1.getCurrentPosition(), armTargetPos, 5);
+                if (cmdComplete == true){
+                    CurrentMode = Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY;
+                    cmdComplete = false;
+                }
+
+            case DELIVER_TO_HIGH_BASKET_EXT_ONLY:
+                extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtPos, Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtPos,Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtMax);
+                extPValue = Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtP;
+                EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtF;
 
                 break;
             case DELIVER_TO_LOW_CHAMBER:
@@ -273,7 +283,8 @@ public enum Mode{
     DELIVER_TO_LOW_CHAMBER(25,50,0,0,50,0,5),
     DELIVER_TO_HIGH_CHAMBER(30,50,0,0,50,0,5),
     DELIVER_TO_LOW_BASKET(2155,50,0,771,50,0,780),
-    DELIVER_TO_HIGH_BASKET(3037,50,0,1114,50,0,1120),
+    DELIVER_TO_HIGH_BASKET_ARM_ONLY(3037,50,0,0,50,0,1120),
+    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3037,50,0,1114,50,0,1120),
     CLIMB(45,50,0,0,50,0,5),
     STOP(0,2100000000,0,0,2100000000,0,5);
 
@@ -293,12 +304,16 @@ public enum Mode{
      this.ExtP = ExtP;
      this.ExtF = ExtF;
      this.ExtMax = ExtMax;
+
  }
 
 
 
 }
 
+public boolean getCmdComlete(){
+    return cmdComplete;
+}
 
 
 

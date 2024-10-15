@@ -256,8 +256,8 @@ public class Tele_Op extends OpMode {
         if (CommonLogic.oneShot(gamepad2.start, gp2_prev_start)){
         }
         if (gamepad2.start){
-//            robot.cmdExcecuteBumpStack();   // this was SetPOS() not setting the mode
-  //          robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.AQUA);
+     // robot.cmdExcecuteBumpStack();   // this was SetPOS() not setting the mode
+            // robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.AQUA);
 
         }
 
@@ -278,7 +278,8 @@ public class Tele_Op extends OpMode {
         }
 
         if (CommonLogic.oneShot(gamepad2.x, gp2_prev_x)) {
-            robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_BASKET);
+            robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY);
+
         }
 
         //robot.swing_arm_and_lift.SwingPos(robot.swing_arm_and_lift.LASTSWINGPOSITION + (int)(gamepad2.left_stick_x) * 5);

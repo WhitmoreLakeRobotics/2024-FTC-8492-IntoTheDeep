@@ -24,12 +24,12 @@ public class Arm extends BaseHardware {
 
 
 
-    private boolean cmdComplete = true;
+    private boolean cmdComplete = false;
     private Mode CurrentMode = Mode.STOP;
     private DcMotor AM1;
     private DcMotor EM1;
 
-    private static final double ARMSPEED = 0.40;
+    private static final double ARMSPEED = 0.500;
     private double ARMHOLDPOWER =0.00;
     private static final int minArmPos = 0;
     private static final int maxArmPos = 4370;
@@ -114,6 +114,9 @@ public class Arm extends BaseHardware {
 
         telemetry.addData("AM1 ", AM1.getCurrentPosition());
         telemetry.addData("EM1 ", EM1.getCurrentPosition());
+        telemetry.addData("Arm Mode ",CurrentMode.toString());
+        telemetry.addData("AM1 Target ", armTargetPos);
+        telemetry.addData("EXT target ", extTargetPos);
 
         AM1.setPower(CommonLogic.CapValue(
                 CommonLogic.PIDcalc(armPValue,ARMHOLDPOWER,AM1.getCurrentPosition(),armTargetPos)
@@ -190,12 +193,13 @@ public class Arm extends BaseHardware {
                 armPValue = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ArmP;
                 ARMHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ArmF;
 
-                extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtPos, Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtPos,Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtMax);
+                //extTargetPos = CommonLogic.CapValueint(0, Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtPos,Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtMax);
+                extTargetPos = 0;
                 extPValue = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtP;
                 EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtF;
 
-                cmdComplete = CommonLogic.inRange( AM1.getCurrentPosition(), armTargetPos, 5);
-                if (cmdComplete == true){
+               // cmdComplete = CommonLogic.inRange( AM1.getCurrentPosition(), armTargetPos, 5);
+                if (cmdComplete){
                     CurrentMode = Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY;
                     cmdComplete = false;
                 }
@@ -284,7 +288,7 @@ public enum Mode{
     DELIVER_TO_HIGH_CHAMBER(30,50,0,0,50,0,5),
     DELIVER_TO_LOW_BASKET(2155,50,0,771,50,0,780),
     DELIVER_TO_HIGH_BASKET_ARM_ONLY(3037,50,0,0,50,0,1120),
-    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3037,50,0,1114,50,0,1120),
+    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3037,50,0,1110,50,0,1120),
     CLIMB(45,50,0,0,50,0,5),
     STOP(0,2100000000,0,0,2100000000,0,5);
 

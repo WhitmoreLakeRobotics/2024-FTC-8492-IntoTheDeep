@@ -122,7 +122,7 @@ public class Arm extends BaseHardware {
                 CommonLogic.PIDcalc(armPValue,ARMHOLDPOWER,AM1.getCurrentPosition(),armTargetPos)
                 ,-ARMSPEED,ARMSPEED));
 
-        EM1.setPower(CommonLogic.CapValue(
+       EM1.setPower(CommonLogic.CapValue(
                 CommonLogic.PIDcalc(extPValue,EXTHOLDPOWER,EM1.getCurrentPosition(),extTargetPos)
                 ,-EXTSPEED,EXTSPEED));
 
@@ -193,16 +193,16 @@ public class Arm extends BaseHardware {
                 armPValue = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ArmP;
                 ARMHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ArmF;
 
-                //extTargetPos = CommonLogic.CapValueint(0, Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtPos,Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtMax);
-                extTargetPos = 0;
+                extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtPos, Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtPos,Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtMax);
                 extPValue = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtP;
                 EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtF;
 
-               // cmdComplete = CommonLogic.inRange( AM1.getCurrentPosition(), armTargetPos, 5);
+                cmdComplete = CommonLogic.inRange( AM1.getCurrentPosition(), armTargetPos, 5);
                 if (cmdComplete){
                     CurrentMode = Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY;
                     cmdComplete = false;
                 }
+                break;
 
             case DELIVER_TO_HIGH_BASKET_EXT_ONLY:
                 extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtPos, Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtPos,Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtMax);

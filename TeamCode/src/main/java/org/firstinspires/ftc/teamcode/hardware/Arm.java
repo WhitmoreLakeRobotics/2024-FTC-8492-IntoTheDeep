@@ -23,7 +23,7 @@ public class Arm extends BaseHardware {
     //private DistanceSensor RearLeftSensor
 
 
-
+    private boolean calEncoderFlag = true;
     private boolean cmdComplete = false;
     private Mode CurrentMode = Mode.STOP;
     private DcMotor AM1;
@@ -36,7 +36,7 @@ public class Arm extends BaseHardware {
     private int armPValue = 50;
     private int armTargetPos = 0;
 
-    private static final double EXTSPEED = 0.40;
+    private static final double EXTSPEED = 0.60;
     private double EXTHOLDPOWER =0.00;
     private static final int minExtPos = 0;
     private static final int maxExtPos = 1180;
@@ -72,13 +72,24 @@ public class Arm extends BaseHardware {
         AM1.setDirection(DcMotor.Direction.FORWARD);
         AM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         AM1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        AM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        if (calEncoderFlag){
+            AM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        }
+        else {
+            AM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+
 
         EM1 = hardwareMap.dcMotor.get("EM1");
         EM1.setDirection(DcMotor.Direction.FORWARD);
         EM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         EM1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        EM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        if (calEncoderFlag){
+            EM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        }
+        else {
+            EM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
 
     }
 
@@ -135,6 +146,16 @@ public class Arm extends BaseHardware {
                 extTargetPos = CommonLogic.CapValueint(Mode.START.ExtPos, Mode.START.ExtPos,Mode.START.ExtMax);
                 extPValue = Mode.START.ExtP;
                 EXTHOLDPOWER = Mode.START.ExtF;
+
+                break;
+            case NEUTRAL_POS:
+                armTargetPos = CommonLogic.CapValueint(Mode.NEUTRAL_POS.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.NEUTRAL_POS.ArmP;
+                ARMHOLDPOWER = Mode.NEUTRAL_POS.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.NEUTRAL_POS.ExtPos, Mode.NEUTRAL_POS.ExtPos,Mode.NEUTRAL_POS.ExtMax);
+                extPValue = Mode.NEUTRAL_POS.ExtP;
+                EXTHOLDPOWER = Mode.NEUTRAL_POS.ExtF;
 
                 break;
             case CLIMB:
@@ -279,18 +300,35 @@ public void updateExtension(double updateTarget){
 }
 
 public enum Mode{
-   START(0,50,0,0,50,0,5),
-    PICKUP_TANK(5,50,0,0,50,0,5),
-    PICKUP_GROUND(160,50,0,205,50,0,210),
-    PICKUP_WALL(15,50,0,0,50,0,5),
-    DELIVER_TO_OBSERVATION(20,50,0,0,50,0,695),
-    DELIVER_TO_LOW_CHAMBER(25,50,0,0,50,0,5),
-    DELIVER_TO_HIGH_CHAMBER(30,50,0,0,50,0,5),
-    DELIVER_TO_LOW_BASKET(2155,50,0,771,50,0,780),
-    DELIVER_TO_HIGH_BASKET_ARM_ONLY(3037,50,0,0,50,0,1120),
-    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3037,50,0,1110,50,0,1120),
-    CLIMB(45,50,0,0,50,0,5),
+/*
+   START(0,100,0,0,100,0,5),
+    PICKUP_TANK(5,100,0,0,100,0,5),
+    PICKUP_GROUND(160,100,0,205,100,0,210),
+    PICKUP_WALL(15,100,0,0,100,0,5),
+    DELIVER_TO_OBSERVATION(20,100,0,0,100,0,695),
+    DELIVER_TO_LOW_CHAMBER(25,100,0,0,100,0,5),
+    DELIVER_TO_HIGH_CHAMBER(30,100,0,0,100,0,5),
+    DELIVER_TO_LOW_BASKET(2400,100,0,780,50,0,1000),
+    DELIVER_TO_HIGH_BASKET_ARM_ONLY(3200,100,0,0,100,0,1120),
+    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3200,100,0,1110,30,0,1120),
+    CLIMB(3800,100,0,0,100,0,5),
+    NEUTRAL_POS(1380,100,0,0,100,0,5),
     STOP(0,2100000000,0,0,2100000000,0,5);
+ */
+    START(                          0,  100,0,0,    100,0,5),
+    PICKUP_TANK(                    5,  100,0,0,    100,0,5),
+    PICKUP_GROUND(                  160,100,0,370,  100,0,400),
+    PICKUP_WALL(                    15, 100,0,0,    100,0,5),
+    DELIVER_TO_OBSERVATION(         20, 100,0,0,    100,0,695),
+    DELIVER_TO_LOW_CHAMBER(         25, 100,0,0,    100,0,5),
+    DELIVER_TO_HIGH_CHAMBER(        30, 100,0,0,    100,0,5),
+    DELIVER_TO_LOW_BASKET(          2400,100,0,1350,100,0,1500),
+    DELIVER_TO_HIGH_BASKET_ARM_ONLY(3200,100,0,0,   100,0,1120),
+    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3200,100,0,2000,30,0,2200),
+    CLIMB(                          3800,100,0,0,   100,0,5),
+    NEUTRAL_POS(                    1380,100,0,0,   100,0,5),
+    STOP(0,2100000000,0,0,2100000000,0,5);
+
 
    private int ArmPos;
    private int ArmP;

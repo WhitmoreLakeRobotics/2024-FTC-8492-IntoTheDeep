@@ -239,6 +239,8 @@ public class Tele_Op extends OpMode {
 
         // Bumpers close and open the gripper
         if (CommonLogic.oneShot(gamepad2.left_bumper, gp2_prev_left_bumper)) {
+            robot.arm.setCurrentMode(Arm.Mode.NEUTRAL_POS);
+
          //   robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.LIME);
 
             RobotLog.aa(TAGTeleop, " gp2_prev_left_bumper : " + gp2_prev_left_bumper);
@@ -248,12 +250,17 @@ public class Tele_Op extends OpMode {
 
 
         if (CommonLogic.oneShot(gamepad2.right_bumper, gp2_prev_right_bumper)) {
+            robot.arm.setCurrentMode(Arm.Mode.CLIMB);
+            robot.intake.setCurrentMode(Intake.Mode.STOP);
+
         }
         if (CommonLogic.oneShot(gamepad2.back, gp2_prev_back)){
-            robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.TWINKLES_FOREST_PALETTE);
+            //robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.TWINKLES_FOREST_PALETTE);
+            robot.intake.setCurrentMode(Intake.Mode.OUT);
         }
 
         if (CommonLogic.oneShot(gamepad2.start, gp2_prev_start)){
+            robot.intake.setCurrentMode(Intake.Mode.IN);
         }
         if (gamepad2.start){
      // robot.cmdExcecuteBumpStack();   // this was SetPOS() not setting the mode

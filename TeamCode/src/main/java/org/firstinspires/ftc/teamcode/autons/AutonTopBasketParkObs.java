@@ -5,13 +5,15 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.Settings;
+import org.firstinspires.ftc.teamcode.hardware.Arm;
+import org.firstinspires.ftc.teamcode.hardware.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 //@Disabled
-@Autonomous(name = "AutonPushNetZonePark", group = "Auton")
+@Autonomous(name = "AutonTopBasketParkObs", group = "Auton")
 // @Autonomous(...) is the other common choice
 
-public class AutonPushNetZonePark extends OpMode {
+public class AutonTopBasketParkObs extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -51,7 +53,7 @@ public class AutonPushNetZonePark extends OpMode {
         robot.hardwareMap = hardwareMap;
         robot.telemetry = telemetry;
         robot.init();
-        telemetry.addData("Test AutonPushNetZonePark", "Initialized");
+        telemetry.addData("Test AutonTopBasketParkObs", "Initialized");
 
         //Initialize Gyro
         robot.driveTrain.ResetGyro();
@@ -94,31 +96,53 @@ public class AutonPushNetZonePark extends OpMode {
                 currentStage = stage._10_Drive_Out;
                 break;
             case _10_Drive_Out:
-                robot.driveTrain.CmdDrive(4,0,0.35,0);
+                robot.driveTrain.CmdDrive(1,0,0.35,0);
                 currentStage = stage._20_Strafe_Left;
                 break;
             case _20_Strafe_Left:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(56,-90,0.35,0);
+                    robot.driveTrain.CmdDrive(0.5,-90,0.35,-90);
+                    currentStage = stage._30_Strafe_Right;
+
+                }
+                break;
+            case _25_Turn_Left:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.CmdDrive(0,0,0.35,-90);
                     currentStage = stage._30_Strafe_Right;
 
                 }
                 break;
             case _30_Strafe_Right:
                 if (robot.driveTrain.getCmdComplete())     {
-                    robot.driveTrain.CmdDrive(26,90,0.35,0);
+                    robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY);
                     currentStage = stage._40_Drive_Forward;
                 }
                 break;
             case _40_Drive_Forward:
-                if (robot.driveTrain.getCmdComplete())  {
-                    robot.driveTrain.CmdDrive(54,0,0.35,0);
+                if (robot.arm.getCmdComlete())  {
+                    robot.intake.setCurrentMode(Intake.Mode.OUT);
+                    runtime.reset();
+                    currentStage = stage._45_Back_Up;
+                }
+                break;
+            case _45_Back_Up:
+                if(runtime.milliseconds() > 3000){
+                    robot.driveTrain.CmdDrive(4,90,0.35,-90);
                     currentStage = stage._50_Strafe_Right;
                 }
                 break;
             case _50_Strafe_Right:
-                if (robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(23,90,0.35,0);
+                if (robot.driveTrain.getCmdComplete()) {
+                    robot.intake.setCurrentMode(Intake.Mode.STOP);
+                    robot.arm.setCurrentMode(Arm.Mode.START);
+                    currentStage = stage._60_Turn;
+                    runtime.reset();
+                }
+                break;
+            case _60_Turn:
+                if (runtime.milliseconds() > 3000) {
+                    robot.driveTrain.CmdDrive(2, 0, 0.35, 0);
                     currentStage = stage._100_End;
                 }
 
@@ -150,9 +174,12 @@ public class AutonPushNetZonePark extends OpMode {
         _00_preStart,
         _10_Drive_Out,
         _20_Strafe_Left,
+        _25_Turn_Left,
         _30_Strafe_Right,
         _40_Drive_Forward,
+        _45_Back_Up,
         _50_Strafe_Right,
+        _60_Turn,
         _100_End
 
 

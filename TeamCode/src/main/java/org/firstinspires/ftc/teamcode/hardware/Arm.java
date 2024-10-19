@@ -23,20 +23,20 @@ public class Arm extends BaseHardware {
     //private DistanceSensor RearLeftSensor
 
 
-    private boolean calEncoderFlag = true;
+    private final boolean calEncoderFlag = false;
     private boolean cmdComplete = false;
     private Mode CurrentMode = Mode.STOP;
     private DcMotor AM1;
     private DcMotor EM1;
 
-    private static final double ARMSPEED = 0.500;
+    private static final double ARMSPEED = 0.800;
     private double ARMHOLDPOWER =0.00;
     private static final int minArmPos = 0;
     private static final int maxArmPos = 4370;
     private int armPValue = 50;
     private int armTargetPos = 0;
 
-    private static final double EXTSPEED = 0.60;
+    private static final double EXTSPEED = 0.70;
     private double EXTHOLDPOWER =0.00;
     private static final int minExtPos = 0;
     private static final int maxExtPos = 1180;
@@ -210,6 +210,7 @@ public class Arm extends BaseHardware {
 
                 break;
             case DELIVER_TO_HIGH_BASKET_ARM_ONLY:
+                cmdComplete = false;
                 armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ArmPos, minArmPos,maxArmPos);
                 armPValue = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ArmP;
                 ARMHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ArmF;
@@ -218,10 +219,10 @@ public class Arm extends BaseHardware {
                 extPValue = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtP;
                 EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtF;
 
-                cmdComplete = CommonLogic.inRange( AM1.getCurrentPosition(), armTargetPos, 5);
-                if (cmdComplete){
+
+                if (CommonLogic.inRange( AM1.getCurrentPosition(), armTargetPos, 100)){
                     CurrentMode = Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY;
-                    cmdComplete = false;
+
                 }
                 break;
 
@@ -229,6 +230,12 @@ public class Arm extends BaseHardware {
                 extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtPos, Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtPos,Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtMax);
                 extPValue = Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtP;
                 EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtF;
+
+
+                if( CommonLogic.inRange( EM1.getCurrentPosition(), extTargetPos, 40) ){
+                    CurrentMode = Mode.NO_OP;
+                    cmdComplete = true;
+                }
 
                 break;
             case DELIVER_TO_LOW_CHAMBER:
@@ -261,7 +268,10 @@ public class Arm extends BaseHardware {
                 EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_CHAMBER.ExtF;
 
                 break;
+            case NO_OP:
+                break;
             default:
+                break;
         }
 
 
@@ -323,11 +333,12 @@ public enum Mode{
     DELIVER_TO_LOW_CHAMBER(         25, 100,0,0,    100,0,5),
     DELIVER_TO_HIGH_CHAMBER(        30, 100,0,0,    100,0,5),
     DELIVER_TO_LOW_BASKET(          2400,100,0,1350,100,0,1500),
-    DELIVER_TO_HIGH_BASKET_ARM_ONLY(3200,100,0,0,   100,0,1120),
-    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3200,100,0,2000,30,0,2200),
+    DELIVER_TO_HIGH_BASKET_ARM_ONLY(3100,100,0,0,   100,0,1120),
+    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3100,100,0,1850,30,0,2000),
     CLIMB(                          3800,100,0,0,   100,0,5),
     NEUTRAL_POS(                    1380,100,0,0,   100,0,5),
-    STOP(0,2100000000,0,0,2100000000,0,5);
+    STOP(0,2100000000,0,0,2100000000,0,5),
+    NO_OP(0, 0, 0, 0, 0, 0, 0);
 
 
    private int ArmPos;

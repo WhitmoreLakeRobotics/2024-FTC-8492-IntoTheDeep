@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.common.Settings;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-//@Disabled
+@Disabled
 @Autonomous(name = "Test_drive2", group = "Auton")
 // @Autonomous(...) is the other common choice
 

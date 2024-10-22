@@ -148,6 +148,20 @@ public class Arm extends BaseHardware {
                 EXTHOLDPOWER = Mode.START.ExtF;
 
                 break;
+
+            case RETRACT_TO_NEUTRAL_POS:
+                extTargetPos = CommonLogic.CapValueint(Mode.RETRACT_TO_NEUTRAL_POS.ExtPos, Mode.RETRACT_TO_NEUTRAL_POS.ExtPos,Mode.RETRACT_TO_NEUTRAL_POS.ExtMax);
+                extPValue = Mode.RETRACT_TO_NEUTRAL_POS.ExtP;
+                EXTHOLDPOWER = Mode.RETRACT_TO_NEUTRAL_POS.ExtF;
+
+
+                if (CommonLogic.inRange( EM1.getCurrentPosition(), extTargetPos, 100)){
+                    CurrentMode = Mode.NEUTRAL_POS;
+
+                }
+                break;
+
+                break;
             case NEUTRAL_POS:
                 armTargetPos = CommonLogic.CapValueint(Mode.NEUTRAL_POS.ArmPos, minArmPos,maxArmPos);
                 armPValue = Mode.NEUTRAL_POS.ArmP;
@@ -158,6 +172,8 @@ public class Arm extends BaseHardware {
                 EXTHOLDPOWER = Mode.NEUTRAL_POS.ExtF;
 
                 break;
+
+
             case CLIMB:
                 armTargetPos = CommonLogic.CapValueint(Mode.CLIMB.ArmPos, minArmPos,maxArmPos);
                 armPValue = Mode.CLIMB.ArmP;
@@ -337,6 +353,7 @@ public enum Mode{
     DELIVER_TO_HIGH_BASKET_EXT_ONLY(3100,100,0,1850,30,0,2000),
     CLIMB(                          3800,100,0,0,   100,0,5),
     NEUTRAL_POS(                    1380,100,0,0,   100,0,5),
+    RETRACT_TO_NEUTRAL_POS(         1380,100,0,0,   100,0,5),
     STOP(0,2100000000,0,0,2100000000,0,5),
     NO_OP(0, 0, 0, 0, 0, 0, 0);
 

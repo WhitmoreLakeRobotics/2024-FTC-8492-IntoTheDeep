@@ -239,7 +239,7 @@ public class Tele_Op extends OpMode {
 
         // Bumpers close and open the gripper
         if (CommonLogic.oneShot(gamepad2.left_bumper, gp2_prev_left_bumper)) {
-            robot.arm.setCurrentMode(Arm.Mode.NEUTRAL_POS);
+            robot.arm.setCurrentMode(Arm.Mode.RETRACT_TO_NEUTRAL_POS);
 
          //   robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.LIME);
 

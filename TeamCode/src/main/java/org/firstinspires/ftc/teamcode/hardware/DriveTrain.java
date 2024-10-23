@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import org.firstinspires.ftc.teamcode.common.SlewRateLimiter;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -18,6 +19,13 @@ public class DriveTrain extends BaseHardware {
     private DcMotor LDM2 ;
     private DcMotor RDM1 ;
     private DcMotor RDM2 ;
+
+    /* Slew rate on power to the DC motors
+    * Slew rate per second */
+    SlewRateLimiter LDM1limiter = new SlewRateLimiter(1.0);
+    SlewRateLimiter LDM2limiter = new SlewRateLimiter(1.0);
+    SlewRateLimiter RDM1limiter = new SlewRateLimiter(1.0);
+    SlewRateLimiter RDM2limiter = new SlewRateLimiter(1.0);
 
     private CommonGyro Gyro = new CommonGyro();
    // private Vision vision = new Vision();
@@ -394,7 +402,7 @@ public class DriveTrain extends BaseHardware {
 
         cmdComplete = false;
         Current_Mode = Mode.DRIVE_AA;
-        startDrive();
+        //startDrive();
     }
     public double calcTurn(int tHeading){
 
@@ -473,33 +481,42 @@ public class DriveTrain extends BaseHardware {
 
         */
 
+        /* Rate limit the change of power at the wheel to limit the slip */
+        LDM1.setPower( LDM1limiter.calculate(LDM1Power) );
+        RDM1.setPower( RDM1limiter.calculate(RDM1Power) );
+        LDM2.setPower( LDM2limiter.calculate(LDM2Power) );
+        RDM2.setPower( RDM2limiter.calculate(RDM2Power) );
 
+        /*
+        LDM1.setPower( LDM1Power );
+        RDM1.setPower( RDM1Power );
+        LDM2.setPower( LDM2Power );
+        RDM2.setPower( RDM2Power );
+         */
 
-        LDM1.setPower(LDM1Power);
-        RDM1.setPower(RDM1Power);
-        LDM2.setPower(LDM2Power);
-        RDM2.setPower(RDM2Power);
         RobotLog.aa(TAGChassis, "doTeleop: LDM1Power =" + LDM1Power + " RDM1Power =" + RDM1Power +
                 " LDM2Power =" + LDM2Power + " RDM2Power =" + RDM2Power);
 
         telemetry.addData(TAGChassis, "doTeleop: LDM1Power =" + LDM1Power + " RDM1Power =" + RDM1Power +
                 " LDM2Power =" + LDM2Power + " RDM2Power =" + RDM2Power);
 
+
     }
     private void doDrive(){
         double distance = getPosInches();
         telemetry.addData(TAGChassis,"distance driven " + distance);
         startDrive();
-    //check to see if we have driven the target distance
-    if(Drive_Target <= distance) {
-        //if we have reached our target distance
-        //stop drive
-        stopMotors();
-        //mark command complete
-            cmdComplete = true;
-        //set current mode stop
-        Current_Mode = Mode.STOPPED;
-    }
+
+        //check to see if we have driven the target distance
+        if(Drive_Target <= distance) {
+            //if we have reached our target distance
+            //stop drive
+            stopMotors();
+            //mark command complete
+                cmdComplete = true;
+            //set current mode stop
+            Current_Mode = Mode.STOPPED;
+        }
 
         //if not keep driving
 
@@ -637,12 +654,12 @@ public class DriveTrain extends BaseHardware {
 
 
     public enum Mode{
-    DRIVE_AA,
+        DRIVE_AA,
         COMMAND_AA,
-    STOPPED,
-    TELEOP,
+        STOPPED,
+        TELEOP,
         DRIVE_BY_SENSOR,
-VISION;
+        VISION;
 
 }
 }

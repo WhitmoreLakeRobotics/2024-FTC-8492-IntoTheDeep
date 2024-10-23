@@ -56,7 +56,7 @@ public class DriveTrain extends BaseHardware {
     private double Drive_Start;  //in inches
     private double Drive_Target;  //in inches
     private static final double Distance_Per_Rev = 2.9528 * 3.14159;
-    private static final double Gear_Ratio = 12;
+    private static final double Gear_Ratio = 12; //10.4329
     private  static final int Gyro_Tol  = 1; //was 3
     private static final double Ticks_Per_Inch = ((Settings.REV_HD_HEX_MOTOR_TICKS_PER_REV *  Gear_Ratio) /  Distance_Per_Rev);
     private double bearing_AA = 0;

@@ -99,7 +99,7 @@ public class AutonParkObs extends OpMode {
                 break;
             case _20_Strafe_Right:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(40,90,0.35,0);
+                    robot.driveTrain.CmdDrive(28,90,0.35,0);
                     currentStage = stage._100_End;
 
                 }

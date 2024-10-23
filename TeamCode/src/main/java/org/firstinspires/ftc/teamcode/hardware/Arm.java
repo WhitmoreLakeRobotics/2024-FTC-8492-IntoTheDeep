@@ -161,7 +161,6 @@ public class Arm extends BaseHardware {
                 }
                 break;
 
-                break;
             case NEUTRAL_POS:
                 armTargetPos = CommonLogic.CapValueint(Mode.NEUTRAL_POS.ArmPos, minArmPos,maxArmPos);
                 armPValue = Mode.NEUTRAL_POS.ArmP;
@@ -350,8 +349,8 @@ public enum Mode{
     DELIVER_TO_HIGH_CHAMBER(        30, 100,0,0,    100,0,5),
     DELIVER_TO_LOW_BASKET(          2400,100,0,1350,100,0,1500),
     DELIVER_TO_HIGH_BASKET_ARM_ONLY(3100,100,0,0,   100,0,1120),
-    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3100,100,0,1850,30,0,2000),
-    CLIMB(                          3800,100,0,0,   100,0,5),
+    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3100,100,0,1750,30,0,2000),
+    CLIMB(                          3950,100,0,0,   100,0,5),
     NEUTRAL_POS(                    1380,100,0,0,   100,0,5),
     RETRACT_TO_NEUTRAL_POS(         1380,100,0,0,   100,0,5),
     STOP(0,2100000000,0,0,2100000000,0,5),

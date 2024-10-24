@@ -64,8 +64,10 @@ public class DriveTrain extends BaseHardware {
     private double Drive_Start;  //in inches
     private double Drive_Target;  //in inches
     private static final double Distance_Per_Rev = 2.9528 * 3.14159;
-    private static final double Gear_Ratio = 12; //10.4329
-    private  static final int Gyro_Tol  = 1; //was 3
+
+    private static final double Gear_Ratio = 10.4329; //10.4329
+    private  static final int Gyro_Tol  = 3; //was 3
+
     private static final double Ticks_Per_Inch = ((Settings.REV_HD_HEX_MOTOR_TICKS_PER_REV *  Gear_Ratio) /  Distance_Per_Rev);
     private double bearing_AA = 0;
     private double speed_AA = 0;
@@ -176,12 +178,12 @@ public class DriveTrain extends BaseHardware {
      * This method will be called repeatedly in a loop while this op mode is running
      */
     public void loop() {
-        //telemetry.addData("Gyro","Gyro "+Gyro.getGyroHeading());
-        //telemetry.addData("LDM1 CP","LDM1 CP "+LDM1.getCurrentPosition());
-        //telemetry.addData("LDM2 CP","LDM2 CP "+LDM2.getCurrentPosition());
+        telemetry.addData("Gyro","Gyro "+Gyro.getGyroHeading());
+        telemetry.addData("LDM1 CP","LDM1 CP "+LDM1.getCurrentPosition());
+        telemetry.addData("LDM2 CP","LDM2 CP "+LDM2.getCurrentPosition());
 
-        //telemetry.addData("RDM1 CP","RDM1 CP "+RDM1.getCurrentPosition());
-        //telemetry.addData("RDM2 CP","RDM2 CP "+RDM2.getCurrentPosition());
+        telemetry.addData("RDM1 CP","RDM1 CP "+RDM1.getCurrentPosition());
+        telemetry.addData("RDM2 CP","RDM2 CP "+RDM2.getCurrentPosition());
 
         switch(Current_Mode){
             case TELEOP:
@@ -203,6 +205,9 @@ public class DriveTrain extends BaseHardware {
             case DRIVE_BY_SENSOR:
                 doDriveBySensor(sensorSelection);
                 break;
+            case COMMAND_TURN:
+                doTurn();
+                break;
         }
 
 
@@ -219,6 +224,26 @@ public class DriveTrain extends BaseHardware {
         cmdComplete = true;
         stopMotors();
 }
+
+    public void cmdTurn(int newHeading, double speed){
+        speed_AA = 0.0;
+        bearing_AA = 0.0;
+       Target_Heading = newHeading;
+
+    Current_Mode = Mode.COMMAND_TURN;
+    }
+
+    public void doTurn(){
+
+    if ( CommonLogic.inRange(Gyro.getGyroHeading(),Target_Heading,Gyro_Tol)  ){
+        stopMotors();
+        Current_Mode = Mode.STOPPED;
+    }else{
+        startDrive();
+    }
+
+
+    }
 
     public void cmdTeleOp(double Left_Y, double Left_X, double Right_X, double Current_Speed) {
         cmdComplete = false;
@@ -253,7 +278,7 @@ public class DriveTrain extends BaseHardware {
         doTeleop();
     }
     public double autoTurn(int newHeading){
-       return calcTurn(newHeading);
+       return  calcTurn(newHeading);
 
 
     }
@@ -391,7 +416,8 @@ public class DriveTrain extends BaseHardware {
 
         Target_Heading = Heading;
 
-    Drive_Target = (TargetDist) + ((Math.abs(Gyro.getGyroHeading() - Target_Heading)*Math.sqrt(2))/turnDistPerDeg);
+    //Drive_Target = (TargetDist) + ((Math.abs(Gyro.getGyroHeading() - Target_Heading)*Math.sqrt(2))/turnDistPerDeg);
+    Drive_Target = TargetDist * Ticks_Per_Inch;
 
     // reset encoders
      resetEncoders();
@@ -503,20 +529,24 @@ public class DriveTrain extends BaseHardware {
 
     }
     private void doDrive(){
-        double distance = getPosInches();
+        double distance = getPosInTicks();
         telemetry.addData(TAGChassis,"distance driven " + distance);
         startDrive();
+    //check to see if we have driven the target distance
+    if(Drive_Target <= distance) {
+        //if we have reached our target distance
+        //stop drive
+        stopMotors();
+        //mark command complete
+            cmdComplete = true;
+        //set current mode stop
+        Current_Mode = Mode.STOPPED;
+    }
+    else {
+        telemetry.addData(TAGChassis,"distance driven " + getPosInches());
+        startDrive();
+    }
 
-        //check to see if we have driven the target distance
-        if(Drive_Target <= distance) {
-            //if we have reached our target distance
-            //stop drive
-            stopMotors();
-            //mark command complete
-                cmdComplete = true;
-            //set current mode stop
-            Current_Mode = Mode.STOPPED;
-        }
 
         //if not keep driving
 
@@ -612,6 +642,17 @@ public class DriveTrain extends BaseHardware {
 
 
     }
+
+    private double getPosInTicks(){
+        double values = Math.abs(LDM1.getCurrentPosition());
+        values += Math.abs(LDM2.getCurrentPosition());
+        values += Math.abs(RDM1.getCurrentPosition());
+        values += Math.abs(RDM2.getCurrentPosition());
+        values = values/4;
+
+        return values;
+    }
+
     public void QuickAligenment() {
    //The intention of this method is to return a turn value based upon a desired alingment direction
         //this should override the right joystick
@@ -658,6 +699,7 @@ public class DriveTrain extends BaseHardware {
         COMMAND_AA,
         STOPPED,
         TELEOP,
+        COMMAND_TURN,
         DRIVE_BY_SENSOR,
         VISION;
 

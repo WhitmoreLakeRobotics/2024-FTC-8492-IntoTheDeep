@@ -247,7 +247,7 @@ public class Arm extends BaseHardware {
                 EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_BASKET_EXT_ONLY.ExtF;
 
 
-                if( CommonLogic.inRange( EM1.getCurrentPosition(), extTargetPos, 40) ){
+                if( CommonLogic.inRange( EM1.getCurrentPosition(), extTargetPos, 100) ){
                     CurrentMode = Mode.NO_OP;
                     cmdComplete = true;
                 }

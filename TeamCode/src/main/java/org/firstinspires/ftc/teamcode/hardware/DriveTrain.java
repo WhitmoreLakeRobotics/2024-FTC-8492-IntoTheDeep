@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import org.firstinspires.ftc.teamcode.common.SlewRateLimiter;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -18,6 +19,13 @@ public class DriveTrain extends BaseHardware {
     private DcMotor LDM2 ;
     private DcMotor RDM1 ;
     private DcMotor RDM2 ;
+
+    /* Slew rate on power to the DC motors
+    * Slew rate per second */
+    SlewRateLimiter LDM1limiter = new SlewRateLimiter(1.0);
+    SlewRateLimiter LDM2limiter = new SlewRateLimiter(1.0);
+    SlewRateLimiter RDM1limiter = new SlewRateLimiter(1.0);
+    SlewRateLimiter RDM2limiter = new SlewRateLimiter(1.0);
 
     private CommonGyro Gyro = new CommonGyro();
    // private Vision vision = new Vision();
@@ -56,8 +64,10 @@ public class DriveTrain extends BaseHardware {
     private double Drive_Start;  //in inches
     private double Drive_Target;  //in inches
     private static final double Distance_Per_Rev = 2.9528 * 3.14159;
-    private static final double Gear_Ratio = 12;
+
+    private static final double Gear_Ratio = 10.4329; //10.4329
     private  static final int Gyro_Tol  = 3; //was 3
+
     private static final double Ticks_Per_Inch = ((Settings.REV_HD_HEX_MOTOR_TICKS_PER_REV *  Gear_Ratio) /  Distance_Per_Rev);
     private double bearing_AA = 0;
     private double speed_AA = 0;
@@ -268,9 +278,7 @@ public class DriveTrain extends BaseHardware {
         doTeleop();
     }
     public double autoTurn(int newHeading){
-        calcTurn(newHeading);
-
-
+       return  calcTurn(newHeading);
 
 
     }
@@ -420,7 +428,7 @@ public class DriveTrain extends BaseHardware {
 
         cmdComplete = false;
         Current_Mode = Mode.DRIVE_AA;
-        startDrive();
+        //startDrive();
     }
     public double calcTurn(int tHeading){
 
@@ -499,17 +507,25 @@ public class DriveTrain extends BaseHardware {
 
         */
 
+        /* Rate limit the change of power at the wheel to limit the slip */
+        LDM1.setPower( LDM1limiter.calculate(LDM1Power) );
+        RDM1.setPower( RDM1limiter.calculate(RDM1Power) );
+        LDM2.setPower( LDM2limiter.calculate(LDM2Power) );
+        RDM2.setPower( RDM2limiter.calculate(RDM2Power) );
 
+        /*
+        LDM1.setPower( LDM1Power );
+        RDM1.setPower( RDM1Power );
+        LDM2.setPower( LDM2Power );
+        RDM2.setPower( RDM2Power );
+         */
 
-        LDM1.setPower(LDM1Power);
-        RDM1.setPower(RDM1Power);
-        LDM2.setPower(LDM2Power);
-        RDM2.setPower(RDM2Power);
         RobotLog.aa(TAGChassis, "doTeleop: LDM1Power =" + LDM1Power + " RDM1Power =" + RDM1Power +
                 " LDM2Power =" + LDM2Power + " RDM2Power =" + RDM2Power);
 
         telemetry.addData(TAGChassis, "doTeleop: LDM1Power =" + LDM1Power + " RDM1Power =" + RDM1Power +
                 " LDM2Power =" + LDM2Power + " RDM2Power =" + RDM2Power);
+
 
     }
     private void doDrive(){
@@ -530,6 +546,7 @@ public class DriveTrain extends BaseHardware {
         telemetry.addData(TAGChassis,"distance driven " + getPosInches());
         startDrive();
     }
+
 
         //if not keep driving
 
@@ -678,13 +695,13 @@ public class DriveTrain extends BaseHardware {
 
 
     public enum Mode{
-    DRIVE_AA,
+        DRIVE_AA,
         COMMAND_AA,
-    STOPPED,
-    TELEOP,
+        STOPPED,
+        TELEOP,
         COMMAND_TURN,
         DRIVE_BY_SENSOR,
-VISION;
+        VISION;
 
 }
 }

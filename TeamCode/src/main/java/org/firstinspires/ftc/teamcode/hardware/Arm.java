@@ -283,6 +283,21 @@ public class Arm extends BaseHardware {
                 EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_CHAMBER.ExtF;
 
                 break;
+            case RETRACT_FROM_HIGH_CHAMBER:
+                armTargetPos = CommonLogic.CapValueint(Mode.RETRACT_FROM_HIGH_CHAMBER.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.RETRACT_FROM_HIGH_CHAMBER.ArmP;
+                ARMHOLDPOWER = Mode.RETRACT_FROM_HIGH_CHAMBER.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.RETRACT_FROM_HIGH_CHAMBER.ExtPos, Mode.RETRACT_FROM_HIGH_CHAMBER.ExtPos,Mode.RETRACT_FROM_HIGH_CHAMBER.ExtMax);
+                extPValue = Mode.RETRACT_FROM_HIGH_CHAMBER.ExtP;
+                EXTHOLDPOWER = Mode.RETRACT_FROM_HIGH_CHAMBER.ExtF;
+
+                if( CommonLogic.inRange( EM1.getCurrentPosition(), extTargetPos, 100) ){
+                    CurrentMode = Mode.NO_OP;
+                    cmdComplete = true;
+                }
+
+                break;
             case NO_OP:
                 break;
             default:
@@ -346,13 +361,14 @@ public enum Mode{
     PICKUP_WALL(                    15, 100,0,0,    100,0,5),
     DELIVER_TO_OBSERVATION(         20, 100,0,0,    100,0,695),
     DELIVER_TO_LOW_CHAMBER(         25, 100,0,0,    100,0,5),
-    DELIVER_TO_HIGH_CHAMBER(        30, 100,0,0,    100,0,5),
+    DELIVER_TO_HIGH_CHAMBER(        1920,120,0,540,   100,0,600),
+    RETRACT_FROM_HIGH_CHAMBER(      1750,120,0,0,   100,0,600),
     DELIVER_TO_LOW_BASKET(          2400,100,0,1350,100,0,1500),
     DELIVER_TO_HIGH_BASKET_ARM_ONLY(3100,100,0,0,   100,0,1120),
-    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3100,100,0,1750,30,0,2000),
+    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3100,100,0,1550,30,0,2000),
     CLIMB(                          3950,100,0,0,   100,0,5),
-    NEUTRAL_POS(                    1380,100,0,0,   100,0,5),
-    RETRACT_TO_NEUTRAL_POS(         1380,100,0,0,   100,0,5),
+    NEUTRAL_POS(                    1480,100,0,0,   100,0,5),
+    RETRACT_TO_NEUTRAL_POS(         1480,100,0,0,   100,0,5),
     STOP(0,2100000000,0,0,2100000000,0,5),
     NO_OP(0, 0, 0, 0, 0, 0, 0);
 

@@ -1,17 +1,18 @@
 package org.firstinspires.ftc.teamcode.autons;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.Settings;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-//@Disabled
+@Disabled
 @Autonomous(name = "AutonSimpleTest", group = "Auton")
 // @Autonomous(...) is the other common choice
 
-public class AutonParkObs extends OpMode {
+public class AutonSimpleTest extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -95,17 +96,17 @@ public class AutonParkObs extends OpMode {
                 break;
             case _10_Drive_Out:
                 robot.driveTrain.CmdDrive(3,0,0.35,0);
-                currentStage = stage._20_Strafe_Right;
+                currentStage = stage._20_Turn_Left;
                 break;
             case _20_Turn_Left:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(0,0,0.35,-90);
+                    robot.driveTrain.cmdTurn(-90,0.35);
                     currentStage = stage._30_Drive_Forward;
                 }
                 break;
             case _30_Drive_Forward:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(10,-900,0.35,-90);
+                    robot.driveTrain.CmdDrive(10,-90,0.35,-90);
                     currentStage = stage._100_End;
                 }
                 break;

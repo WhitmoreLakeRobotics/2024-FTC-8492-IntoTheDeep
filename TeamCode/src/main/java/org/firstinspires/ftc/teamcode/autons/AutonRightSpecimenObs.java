@@ -6,14 +6,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.Settings;
 import org.firstinspires.ftc.teamcode.hardware.Arm;
-import org.firstinspires.ftc.teamcode.hardware.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 //@Disabled
-@Autonomous(name = "AutonTopBParkAsc", group = "Auton")
+@Autonomous(name = "AutonRightSpecimenObs", group = "Auton")
 // @Autonomous(...) is the other common choice
 
-public class AutonTopBParkAsc extends OpMode {
+public class AutonRightSpecimenObs extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -53,7 +52,7 @@ public class AutonTopBParkAsc extends OpMode {
         robot.hardwareMap = hardwareMap;
         robot.telemetry = telemetry;
         robot.init();
-        telemetry.addData("Test AutonTopBParkAsc", "Initialized");
+        telemetry.addData("Test AutonRightSpecimenObs", "Initialized");
 
         //Initialize Gyro
         robot.driveTrain.ResetGyro();
@@ -96,82 +95,42 @@ public class AutonTopBParkAsc extends OpMode {
                 currentStage = stage._10_Drive_Out;
                 break;
             case _10_Drive_Out:
-                robot.driveTrain.CmdDrive(1,0,0.35,0);
+                robot.driveTrain.CmdDrive(3,0,0.35,0);
+                robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_CHAMBER);
                 currentStage = stage._20_Strafe_Left;
                 break;
             case _20_Strafe_Left:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.cmdTurn(-90, 0.35);
-                    currentStage = stage._25_Drive_Back;
-
+                    robot.driveTrain.CmdDrive(5,-90,0.35,0);
+                    currentStage = stage._30_Drive_Forward;
                 }
                 break;
-            case _25_Drive_Back:
-                if (robot.driveTrain.getCmdComplete())     {
-                    robot.driveTrain.CmdDrive(11, -179, 0.35, -90);
-                    currentStage = stage._28_Drive_To_Basket;
+            case _30_Drive_Forward:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.CmdDrive(33,0,0.35,0);
+                    currentStage = stage._35_Retract_Arm;
                 }
                 break;
-            case _28_Drive_To_Basket:
-                if (robot.driveTrain.getCmdComplete())     {
-                    robot.driveTrain.CmdDrive(10, -90, 0.35, -90);
-                    currentStage = stage._30_Strafe_Right;
-                }
-                break;
-            case _30_Strafe_Right:
-                if (robot.driveTrain.getCmdComplete())     {
-                    robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY);
-                    currentStage = stage._40_Drive_Forward;
-                }
-                break;
-            case _40_Drive_Forward:
-                if (robot.arm.getCmdComlete())  {
-                    robot.intake.setCurrentMode(Intake.Mode.OUT);
+            case _35_Retract_Arm:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.arm.setCurrentMode(Arm.Mode.RETRACT_FROM_HIGH_CHAMBER);
                     runtime.reset();
+                    currentStage = stage._40_Drive_Back;
+                }
+                break;
+            case _40_Drive_Back:
+                if(robot.arm.getCmdComlete() || (runtime.milliseconds() > 750)){
+                    robot.driveTrain.CmdDrive(19,-179,0.35,0);
                     currentStage = stage._50_Strafe_Right;
                 }
                 break;
-            /*case _45_Back_Up:
-                if(runtime.milliseconds() > 3000){
-                    robot.driveTrain.CmdDrive(1,90,0.35,-90);
-                    currentStage = stage._50_Strafe_Right;
-                }
-                break;*/
             case _50_Strafe_Right:
-                if (runtime.milliseconds() > 2000) {
-                    robot.intake.setCurrentMode(Intake.Mode.STOP);
-                    robot.arm.setCurrentMode(Arm.Mode.RETRACT_TO_NEUTRAL_POS);
-                    currentStage = stage._55_Turn;
-                    runtime.reset();
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.CmdDrive(62,90,0.35,0);
+                    currentStage = stage._60_Arm_Return;
                 }
                 break;
-            case _55_Turn:
-                if(runtime.milliseconds() > 3000){
-                    robot.driveTrain.cmdTurn(0, 0.35);
-                    currentStage = stage._70_Drive_Forward;
-                }
-                break;
-            /*case _60_Turn:
-                if (robot.driveTrain.getCmdComplete()) {
-                    robot.driveTrain.CmdDrive(50, 0, 0.35, 0);
-                    currentStage = stage._100_End;
-                }
-
-                break;*/
-            case _70_Drive_Forward:
-                if (robot.driveTrain.getCmdComplete())     {
-                    robot.driveTrain.CmdDrive(39, 0, 0.35, 0);
-                    currentStage = stage._80_Strafe_Right;
-                }
-
-                break;
-            case _80_Strafe_Right:
-                if (robot.driveTrain.getCmdComplete())     {
-                    robot.driveTrain.CmdDrive(22, 90, 0.35,0 );
-                    currentStage = stage._90_Arm_Start;
-                }
-                break;
-            case _90_Arm_Start:
+            case _60_Arm_Return:
                 if (robot.driveTrain.getCmdComplete())     {
                     robot.arm.setCurrentMode(Arm.Mode.START);
                     currentStage = stage._100_End;
@@ -183,6 +142,7 @@ public class AutonTopBParkAsc extends OpMode {
 
 
                 }
+
 
                 break;
         }
@@ -204,18 +164,11 @@ public class AutonTopBParkAsc extends OpMode {
         _00_preStart,
         _10_Drive_Out,
         _20_Strafe_Left,
-
-        _25_Drive_Back,
-        _28_Drive_To_Basket,
-        _30_Strafe_Right,
-        _40_Drive_Forward,
-        _45_Back_Up,
+        _30_Drive_Forward,
+        _35_Retract_Arm,
+        _40_Drive_Back,
         _50_Strafe_Right,
-        _55_Turn,
-        _60_Turn,
-        _70_Drive_Forward,
-        _80_Strafe_Right,
-        _90_Arm_Start,
+        _60_Arm_Return,
         _100_End
 
 

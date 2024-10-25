@@ -33,7 +33,7 @@ public class Intake extends BaseHardware {
     private Mode CurrentMode = Mode.STOP;
     private final double StopPos = 0.5;
     private final double InPos = 1;
-    private final double OutPos = 0;
+    private final double OutPos = 0.425;
 
     private Color SignalColor;
     private double NTKdistance; //in cm

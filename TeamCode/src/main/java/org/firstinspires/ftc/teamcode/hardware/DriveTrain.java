@@ -229,7 +229,7 @@ public class DriveTrain extends BaseHardware {
         speed_AA = 0.0;
         bearing_AA = 0.0;
        Target_Heading = newHeading;
-
+    cmdComplete = false;
     Current_Mode = Mode.COMMAND_TURN;
     }
 
@@ -238,6 +238,7 @@ public class DriveTrain extends BaseHardware {
     if ( CommonLogic.inRange(Gyro.getGyroHeading(),Target_Heading,Gyro_Tol)  ){
         stopMotors();
         Current_Mode = Mode.STOPPED;
+        cmdComplete = true;
     }else{
         startDrive();
     }

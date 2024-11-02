@@ -9,10 +9,10 @@ import org.firstinspires.ftc.teamcode.hardware.Arm;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 //@Disabled
-@Autonomous(name = "AutonRightSpecimenObs", group = "Auton")
+@Autonomous(name = "AutonLeftSpecimen", group = "Auton")
 // @Autonomous(...) is the other common choice
 
-public class AutonRightSpecimenObs extends OpMode {
+public class AutonLeftSpecimen extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -52,7 +52,7 @@ public class AutonRightSpecimenObs extends OpMode {
         robot.hardwareMap = hardwareMap;
         robot.telemetry = telemetry;
         robot.init();
-        telemetry.addData("Test AutonRightSpecimenObs", "Initialized");
+        telemetry.addData("Test AutonLeftSpecimen", "Initialized");
 
         //Initialize Gyro
         robot.driveTrain.ResetGyro();
@@ -97,11 +97,11 @@ public class AutonRightSpecimenObs extends OpMode {
             case _10_Drive_Out:
                 robot.driveTrain.CmdDrive(3,0,0.35,0);
                 robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_CHAMBER);
-                currentStage = stage._20_Strafe_Left;
+                currentStage = stage._20_Strafe_Right;
                 break;
-            case _20_Strafe_Left:
+            case _20_Strafe_Right:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(5,-90,0.35,0);
+                    robot.driveTrain.CmdDrive(8,90,0.35,0);
                     currentStage = stage._30_Drive_Forward;
                 }
                 break;
@@ -120,23 +120,72 @@ public class AutonRightSpecimenObs extends OpMode {
                 break;
             case _40_Drive_Back:
                 if(robot.arm.getCmdComlete() || (runtime.milliseconds() > 750)){
-                    robot.driveTrain.CmdDrive(19,-179,0.35,0);
-                    currentStage = stage._50_Strafe_Right;
-                }
-                break;
-            case _50_Strafe_Right:
-                if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(62,90,0.35,0);
-                    currentStage = stage._60_Arm_Return;
-                }
-                break;
-            case _60_Arm_Return:
-                if (robot.driveTrain.getCmdComplete())     {
+                    robot.driveTrain.CmdDrive(3,-179,0.35,0);
                     robot.arm.setCurrentMode(Arm.Mode.START);
-                    currentStage = stage._100_End;
+                    currentStage = stage._50_Strafe_Left;
                 }
                 break;
-            case _100_End:
+            case _50_Strafe_Left:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.CmdDrive(28,-90,0.35,0);
+                    currentStage = stage._60_Drive_Foward;
+                }
+                break;
+            case _60_Drive_Foward:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.CmdDrive(13,0,0.35,0);
+                    currentStage = stage._70_Turn;
+                }
+                break;
+            case _70_Turn:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.cmdTurn(-90, 0.35);
+                    currentStage = stage._90_Drive_Back;
+                }
+                break;
+            case _80_Drive_Left:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.CmdDrive(1,-90,0.35,-90);
+                    currentStage = stage._90_Drive_Back;
+                }
+                break;
+            case _90_Drive_Back:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.CmdDrive(30,-179,0.35,-90);
+                    currentStage = stage._95_Deliver;
+                }
+                break;
+            case _95_Deliver:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.CmdDrive(13,-135,0.35,-90);
+                    currentStage = stage._100_Drive_Forward;
+                }
+                break;
+            case _100_Drive_Forward:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.CmdDrive(10,20,0.35,-90);
+                    currentStage = stage._110_Turn;
+                }
+                break;
+            case _110_Turn:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.cmdTurn(0, 0.35);
+                    currentStage = stage._120_Drive_Forward;
+                }
+                break;
+            case _120_Drive_Forward:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.CmdDrive(28,33,0.35,0);
+                    currentStage = stage._130_Park;
+                }
+                break;
+            case _130_Park:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.driveTrain.CmdDrive(18,90,0.35,0);
+                    currentStage = stage._200_End;
+                }
+                break;
+            case _200_End:
                 if(robot.driveTrain.getCmdComplete()){
                     robot.stop();
 
@@ -163,13 +212,21 @@ public class AutonRightSpecimenObs extends OpMode {
         _unknown,
         _00_preStart,
         _10_Drive_Out,
-        _20_Strafe_Left,
+        _20_Strafe_Right,
         _30_Drive_Forward,
         _35_Retract_Arm,
         _40_Drive_Back,
-        _50_Strafe_Right,
-        _60_Arm_Return,
-        _100_End
+        _50_Strafe_Left,
+        _60_Drive_Foward,
+        _70_Turn,
+        _80_Drive_Left,
+        _90_Drive_Back,
+        _95_Deliver,
+        _100_Drive_Forward,
+        _110_Turn,
+        _120_Drive_Forward,
+        _130_Park,
+        _200_End
 
 
     }

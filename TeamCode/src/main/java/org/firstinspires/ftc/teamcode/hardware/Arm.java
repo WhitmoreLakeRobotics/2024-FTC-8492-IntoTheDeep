@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.CommonLogic;
+import org.firstinspires.ftc.teamcode.common.BasicPID;
 
 /**
  * Base class for FTC Team 8492 defined hardware
@@ -22,6 +23,8 @@ public class Arm extends BaseHardware {
     //private ColorRangeSensor IntakeSensor;
     //private DistanceSensor RearLeftSensor
 
+    BasicPID EM1pid = new BasicPID(0.0006,0.00005,0, 0);
+
 
     private final boolean calEncoderFlag = false;
     private boolean cmdComplete = false;
@@ -36,7 +39,7 @@ public class Arm extends BaseHardware {
     private int armPValue = 50;
     private int armTargetPos = 0;
 
-    private static final double EXTSPEED = 0.70;
+    private static final double EXTSPEED = 0.90;
     private double EXTHOLDPOWER =0.00;
     private static final int minExtPos = 0;
     private static final int maxExtPos = 1180;
@@ -90,6 +93,9 @@ public class Arm extends BaseHardware {
         else {
             EM1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
+        // Configure the PID limits
+        EM1pid.setOutputLimits(-EXTSPEED, EXTSPEED);
+
 
     }
 
@@ -133,9 +139,13 @@ public class Arm extends BaseHardware {
                 CommonLogic.PIDcalc(armPValue,ARMHOLDPOWER,AM1.getCurrentPosition(),armTargetPos)
                 ,-ARMSPEED,ARMSPEED));
 
-       EM1.setPower(CommonLogic.CapValue(
+        EM1.setPower(CommonLogic.CapValue(
                 CommonLogic.PIDcalc(extPValue,EXTHOLDPOWER,EM1.getCurrentPosition(),extTargetPos)
                 ,-EXTSPEED,EXTSPEED));
+/*
+        EM1.setPower( CommonLogic.CapValue( EM1pid.getOutput( EM1.getCurrentPosition(), extTargetPos ),
+                -EXTSPEED, EXTSPEED ) );
+*/
 
         switch(CurrentMode){
             case START:
@@ -214,6 +224,17 @@ public class Arm extends BaseHardware {
                 EXTHOLDPOWER = Mode.PICKUP_GROUND.ExtF;
 
                 break;
+            case PICKUP_SUBMERSIBLE:
+                armTargetPos = CommonLogic.CapValueint(Mode.PICKUP_SUBMERSIBLE.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.PICKUP_SUBMERSIBLE.ArmP;
+                ARMHOLDPOWER = Mode.PICKUP_SUBMERSIBLE.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.PICKUP_SUBMERSIBLE.ExtPos, Mode.PICKUP_SUBMERSIBLE.ExtPos,Mode.PICKUP_SUBMERSIBLE.ExtMax);
+                extPValue = Mode.PICKUP_SUBMERSIBLE.ExtP;
+                EXTHOLDPOWER = Mode.PICKUP_SUBMERSIBLE.ExtF;
+
+                break;
+
             case DELIVER_TO_LOW_BASKET:
                 armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_LOW_BASKET.ArmPos, minArmPos,maxArmPos);
                 armPValue = Mode.DELIVER_TO_LOW_BASKET.ArmP;
@@ -355,17 +376,18 @@ public enum Mode{
     NEUTRAL_POS(1380,100,0,0,100,0,5),
     STOP(0,2100000000,0,0,2100000000,0,5);
  */
-    START(                          0,  100,0,0,    100,0,5),
+    START(                          0,  120,0,0,    120,0,5),
     PICKUP_TANK(                    5,  100,0,0,    100,0,5),
-    PICKUP_GROUND(                  160,100,0,370,  100,0,400),
+    PICKUP_GROUND(                  160,100,0,370,  100,1,400),
     PICKUP_WALL(                    15, 100,0,0,    100,0,5),
+    PICKUP_SUBMERSIBLE(             500, 100, 0, 650, 100, 1, 680),
     DELIVER_TO_OBSERVATION(         20, 100,0,0,    100,0,695),
     DELIVER_TO_LOW_CHAMBER(         25, 100,0,0,    100,0,5),
-    DELIVER_TO_HIGH_CHAMBER(        1920,120,0,540,   100,0,600),
+    DELIVER_TO_HIGH_CHAMBER(        1900,120,0,540,   200,1,600),
     RETRACT_FROM_HIGH_CHAMBER(      1750,120,0,0,   100,0,600),
     DELIVER_TO_LOW_BASKET(          2400,100,0,1350,100,0,1500),
     DELIVER_TO_HIGH_BASKET_ARM_ONLY(3100,100,0,0,   100,0,1120),
-    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3100,100,0,1550,30,0,2000),
+    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3100,100,0,1450,75,0,1550),
     CLIMB(                          3950,100,0,0,   100,0,5),
     NEUTRAL_POS(                    1480,100,0,0,   100,0,5),
     RETRACT_TO_NEUTRAL_POS(         1480,100,0,0,   100,0,5),

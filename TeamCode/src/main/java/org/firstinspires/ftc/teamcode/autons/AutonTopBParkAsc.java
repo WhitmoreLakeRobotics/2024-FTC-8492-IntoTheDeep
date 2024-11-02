@@ -108,15 +108,22 @@ public class AutonTopBParkAsc extends OpMode {
                 break;
             case _25_Drive_Back:
                 if (robot.driveTrain.getCmdComplete())     {
-                    robot.driveTrain.CmdDrive(11, -179, 0.35, -90);
+                    robot.driveTrain.CmdDrive(10, -179, 0.35, -90);
                     currentStage = stage._28_Drive_To_Basket;
                 }
                 break;
             case _28_Drive_To_Basket:
                 if (robot.driveTrain.getCmdComplete())     {
-                    robot.driveTrain.CmdDrive(10, -90, 0.35, -90);
+                    robot.driveTrain.CmdDrive(11, -90, 0.35, -90);
+                    currentStage = stage._29_Drive_To_Wall;
+                }
+                break;
+            case _29_Drive_To_Wall:
+                if (robot.driveTrain.getCmdComplete())     {
+                    robot.driveTrain.CmdDrive(4, -179, 0.35, -90);
                     currentStage = stage._30_Strafe_Right;
                 }
+
                 break;
             case _30_Strafe_Right:
                 if (robot.driveTrain.getCmdComplete())     {
@@ -138,7 +145,7 @@ public class AutonTopBParkAsc extends OpMode {
                 }
                 break;*/
             case _50_Strafe_Right:
-                if (runtime.milliseconds() > 2000) {
+                if (runtime.milliseconds() > 2700) {
                     robot.intake.setCurrentMode(Intake.Mode.STOP);
                     robot.arm.setCurrentMode(Arm.Mode.RETRACT_TO_NEUTRAL_POS);
                     currentStage = stage._55_Turn;
@@ -204,9 +211,9 @@ public class AutonTopBParkAsc extends OpMode {
         _00_preStart,
         _10_Drive_Out,
         _20_Strafe_Left,
-
         _25_Drive_Back,
         _28_Drive_To_Basket,
+        _29_Drive_To_Wall,
         _30_Strafe_Right,
         _40_Drive_Forward,
         _45_Back_Up,

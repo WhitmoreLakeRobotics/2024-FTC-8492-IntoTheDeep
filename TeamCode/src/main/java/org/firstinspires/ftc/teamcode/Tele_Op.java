@@ -327,6 +327,8 @@ public class Tele_Op extends OpMode {
         }
 
         if (gamepad2.right_trigger > 0.8){
+            robot.arm.setCurrentMode(Arm.Mode.PICKUP_SUBMERSIBLE);
+            robot.intake.setCurrentMode(Intake.Mode.IN);
         }
         if ((gamepad2.right_trigger <= 0.79) && (gamepad2.right_trigger > 0.10)){
 //            robot.sweeper.setCurrentMode(Sweeper.Mode.STOP);

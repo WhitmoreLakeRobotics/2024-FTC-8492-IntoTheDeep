@@ -32,7 +32,7 @@ public class Arm extends BaseHardware {
     private DcMotor AM1;
     private DcMotor EM1;
 
-    private static final double ARMSPEED = 0.800;
+    private static final double ARMSPEED = 0.900;
     private double ARMHOLDPOWER =0.00;
     private static final int minArmPos = 0;
     private static final int maxArmPos = 4370;

@@ -335,8 +335,8 @@ public class Tele_Op extends OpMode {
         }
         if( robot.arm.getCurrentMode() == Arm.Mode.PICKUP_SUBMERSIBLE_IDLE ) {
 
-            if (Math.abs(gamepad1.right_stick_y) > Settings.JOYSTICK_DEADBAND_STICK) {
-                robot.arm.updateExtension(gamepad1.right_stick_y * -1);
+            if (Math.abs(gamepad2.right_stick_y) > Settings.JOYSTICK_DEADBAND_STICK) {
+                robot.arm.updateExtension(gamepad2.right_stick_y * -1);
             }
         }
 

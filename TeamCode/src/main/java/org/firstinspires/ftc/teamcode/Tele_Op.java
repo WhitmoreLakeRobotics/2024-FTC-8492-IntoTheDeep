@@ -240,6 +240,7 @@ public class Tele_Op extends OpMode {
         // Bumpers close and open the gripper
         if (CommonLogic.oneShot(gamepad2.left_bumper, gp2_prev_left_bumper)) {
             robot.arm.setCurrentMode(Arm.Mode.RETRACT_TO_NEUTRAL_POS);
+            robot.intake.setCurrentMode(Intake.Mode.STOP);
 
          //   robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.LIME);
 
@@ -299,11 +300,13 @@ public class Tele_Op extends OpMode {
 
         //robot.swing_arm_and_lift.LiftPos(robot.swing_arm_and_lift.LASTLIFTPOSITION + (int)(gamepad2.right_stick_y) * 5);
 
-        if (Math.abs(gamepad2.right_stick_y) > Settings.JOYSTICK_DEADBAND_STICK) {
+//        if (Math.abs(gamepad2.right_stick_y) > Settings.JOYSTICK_DEADBAND_STICK)
+
+
             //robot.subLifter.stickControl(-gamepad2.left_stick_y);
             //robot.capper.cmdTeleOp(gamepad2.right_stick_y * .5);
 
-        }
+
 
         if (CommonLogic.oneShot(gamepad2.dpad_up, gp2_prev_dpad_up)) {
             robot.arm.setCurrentMode(Arm.Mode.START);
@@ -330,6 +333,13 @@ public class Tele_Op extends OpMode {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_SUBMERSIBLE);
             robot.intake.setCurrentMode(Intake.Mode.IN);
         }
+        if( robot.arm.getCurrentMode() == Arm.Mode.PICKUP_SUBMERSIBLE_IDLE ) {
+
+            if (Math.abs(gamepad1.right_stick_y) > Settings.JOYSTICK_DEADBAND_STICK) {
+                robot.arm.updateExtension(gamepad1.right_stick_y * -1);
+            }
+        }
+
         if ((gamepad2.right_trigger <= 0.79) && (gamepad2.right_trigger > 0.10)){
 //            robot.sweeper.setCurrentMode(Sweeper.Mode.STOP);
         }

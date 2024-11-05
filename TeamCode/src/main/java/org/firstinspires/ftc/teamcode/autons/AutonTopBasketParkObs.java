@@ -144,6 +144,7 @@ public class AutonTopBasketParkObs extends OpMode {
             case _60_Turn:
                 if (runtime.milliseconds() > 3000) {
                     robot.driveTrain.CmdDrive(2, 0, 0.35, 0);
+                    robot.intake.setCurrentMode(Intake.Mode.STOP);
                     currentStage = stage._100_End;
                 }
 

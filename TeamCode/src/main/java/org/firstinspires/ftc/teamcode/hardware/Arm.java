@@ -47,7 +47,7 @@ public class Arm extends BaseHardware {
     private int extTargetPos = 0;
 
 
-    private double extStepSize = 10.0;
+    private double extStepSize = 50.0;
 
     /**
      * Hardware Mappings
@@ -232,6 +232,10 @@ public class Arm extends BaseHardware {
                 extTargetPos = CommonLogic.CapValueint(Mode.PICKUP_SUBMERSIBLE.ExtPos, Mode.PICKUP_SUBMERSIBLE.ExtPos,Mode.PICKUP_SUBMERSIBLE.ExtMax);
                 extPValue = Mode.PICKUP_SUBMERSIBLE.ExtP;
                 EXTHOLDPOWER = Mode.PICKUP_SUBMERSIBLE.ExtF;
+                CurrentMode = Mode.PICKUP_SUBMERSIBLE_IDLE;
+
+                break;
+            case PICKUP_SUBMERSIBLE_IDLE:
 
                 break;
 
@@ -352,6 +356,10 @@ public void setCurrentMode(Mode otherMode ){
 CurrentMode = otherMode;
 }
 
+public Mode getCurrentMode(){
+    //update to recieve and set mode
+    return CurrentMode;
+}
 
 public void updateExtension(double updateTarget){
         //multiply update target by some amount then add to target pos.
@@ -380,7 +388,8 @@ public enum Mode{
     PICKUP_TANK(                    5,  100,0,0,    100,0,5),
     PICKUP_GROUND(                  160,100,0,370,  100,1,400),
     PICKUP_WALL(                    15, 100,0,0,    100,0,5),
-    PICKUP_SUBMERSIBLE(             500, 100, 0, 650, 100, 1, 680),
+    PICKUP_SUBMERSIBLE(             500, 100, 0, 650, 120, 0, 680),
+    PICKUP_SUBMERSIBLE_IDLE(        0,  120,0,   0,   120, 0,680),
     DELIVER_TO_OBSERVATION(         20, 100,0,0,    100,0,695),
     DELIVER_TO_LOW_CHAMBER(         25, 100,0,0,    100,0,5),
     DELIVER_TO_HIGH_CHAMBER(        1875,120,0,540,   200,1,600),

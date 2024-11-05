@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.Settings;
 import org.firstinspires.ftc.teamcode.hardware.Arm;
+import org.firstinspires.ftc.teamcode.hardware.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 //@Disabled
@@ -133,6 +134,7 @@ public class AutonRightSpecimenObs extends OpMode {
             case _60_Arm_Return:
                 if (robot.driveTrain.getCmdComplete())     {
                     robot.arm.setCurrentMode(Arm.Mode.START);
+                    robot.intake.setCurrentMode(Intake.Mode.STOP);
                     currentStage = stage._100_End;
                 }
                 break;

@@ -368,6 +368,14 @@ public void updateExtension(double updateTarget){
     extTargetPos = CommonLogic.CapValueint(nTarget,CurrentMode.ExtPos,CurrentMode.ExtMax);
 }
 
+public void resetEncoders(){
+
+    AM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    AM1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    EM1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    EM1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+}
+
 public enum Mode{
 /*
    START(0,100,0,0,100,0,5),

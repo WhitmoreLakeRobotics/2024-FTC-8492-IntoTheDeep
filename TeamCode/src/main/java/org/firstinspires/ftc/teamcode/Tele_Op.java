@@ -337,6 +337,7 @@ public class Tele_Op extends OpMode {
 
             if (Math.abs(gamepad2.right_stick_y) > Settings.JOYSTICK_DEADBAND_STICK) {
                 robot.arm.updateExtension(gamepad2.right_stick_y * -1);
+                robot.arm.updateArm(gamepad2.right_stick_y * -1);
             }
         }
 

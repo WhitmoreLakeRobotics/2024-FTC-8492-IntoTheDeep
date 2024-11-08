@@ -48,6 +48,7 @@ public class Arm extends BaseHardware {
 
 
     private double extStepSize = 50.0;
+    private double armStepSize = 10.0;
 
     /**
      * Hardware Mappings
@@ -366,6 +367,13 @@ public void updateExtension(double updateTarget){
         //wrap set value in cap
     int nTarget = (int) (extTargetPos + (updateTarget * extStepSize));
     extTargetPos = CommonLogic.CapValueint(nTarget,CurrentMode.ExtPos,CurrentMode.ExtMax);
+}
+
+public void updateArm(double updateTarget){
+    //multiply update targed by some amount then add to target pos.
+    //wrap set value in cap
+    int nTarget = (int) (armTargetPos + (updateTarget * armStepSize));
+    armTargetPos = CommonLogic.CapValueint(nTarget,minArmPos,maxArmPos);
 }
 
 public void resetEncoders(){

@@ -279,13 +279,14 @@ public class AutonRightMultiSpecimen2 extends OpMode {
                 break;
             case _170_Backup:
                 if(robot.arm.getCmdComlete() || (runtime.milliseconds() > 750)){
-                    robot.arm.setCurrentMode(Arm.Mode.START);
+                    //robot.arm.setCurrentMode(Arm.Mode.START);
                     robot.driveTrain.CmdDrive(1,-179,0.35,0);
                     currentStage = stage._190_Park;
                 }
                 break;
             case _190_Park:
                 if (robot.driveTrain.getCmdComplete()) {
+                    robot.arm.setCurrentMode(Arm.Mode.START);
                     robot.driveTrain.CmdDrive(60,115,0.55,0);
                     currentStage = stage._200_End;
                 }

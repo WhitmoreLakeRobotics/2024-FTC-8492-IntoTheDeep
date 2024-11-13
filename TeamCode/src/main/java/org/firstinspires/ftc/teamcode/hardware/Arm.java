@@ -132,6 +132,9 @@ public class Arm extends BaseHardware {
 
         telemetry.addData("AM1 ", AM1.getCurrentPosition());
         telemetry.addData("EM1 ", EM1.getCurrentPosition());
+        /*telemetry.addData("EM1 power ", CommonLogic.CapValue(
+                CommonLogic.PIDcalc(extPValue,EXTHOLDPOWER,EM1.getCurrentPosition(),extTargetPos)
+                ,-EXTSPEED,EXTSPEED));*/
         telemetry.addData("Arm Mode ",CurrentMode.toString());
         telemetry.addData("AM1 Target ", armTargetPos);
         telemetry.addData("EXT target ", extTargetPos);

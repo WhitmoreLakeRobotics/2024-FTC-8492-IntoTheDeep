@@ -132,9 +132,12 @@ public class Arm extends BaseHardware {
 
         telemetry.addData("AM1 ", AM1.getCurrentPosition());
         telemetry.addData("EM1 ", EM1.getCurrentPosition());
-        /*telemetry.addData("EM1 power ", CommonLogic.CapValue(
+        telemetry.addData("EM1 power ", CommonLogic.CapValue(
                 CommonLogic.PIDcalc(extPValue,EXTHOLDPOWER,EM1.getCurrentPosition(),extTargetPos)
-                ,-EXTSPEED,EXTSPEED));*/
+                ,-EXTSPEED,EXTSPEED));
+        telemetry.addData("AM1 power ", CommonLogic.CapValue(
+                CommonLogic.PIDcalc(armPValue,ARMHOLDPOWER,AM1.getCurrentPosition(),armTargetPos)
+                ,-ARMSPEED,ARMSPEED));
         telemetry.addData("Arm Mode ",CurrentMode.toString());
         telemetry.addData("AM1 Target ", armTargetPos);
         telemetry.addData("EXT target ", extTargetPos);
@@ -403,7 +406,7 @@ public enum Mode{
     NEUTRAL_POS(1380,100,0,0,100,0,5),
     STOP(0,2100000000,0,0,2100000000,0,5);
  */
-    START(                          0,  120,0,0,    120,0,5),
+    START(                          0,  150,0,0,    150,0,5),
     PICKUP_TANK(                    5,  100,0,0,    100,0,5),
     PICKUP_GROUND(                  160,100,0,370,  100,1,400),
     PICKUP_WALL(                    60, 100,0,90,    100,0,95),
@@ -417,7 +420,7 @@ public enum Mode{
     DELIVER_TO_HIGH_BASKET_ARM_ONLY(3300,100,0,0,   100,0,1120),
     DELIVER_TO_HIGH_BASKET_EXT_ONLY(3300,100,0,1550,75,0,1650),
     CLIMB(                          3950,100,0,0,   100,0,5),
-    NEUTRAL_POS(                    1480,100,0,0,   100,0,5),
+    NEUTRAL_POS(                    1480,150,0,0,   150,0,5),
     RETRACT_TO_NEUTRAL_POS(         1480,100,0,0,   100,0,5),
     STOP(0,2100000000,0,0,2100000000,0,5),
     NO_OP(0, 0, 0, 0, 0, 0, 0);

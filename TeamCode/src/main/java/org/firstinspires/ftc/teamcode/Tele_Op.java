@@ -284,10 +284,24 @@ public class Tele_Op extends OpMode {
 //            robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
             //robot.subExtender.incPositionIndex();
         }
+        if( robot.arm.getCurrentMode() == Arm.Mode.DELIVER_TO_HIGH_CHAMBER_IDLE ) {
+
+            if (Math.abs(gamepad2.right_stick_y) > Settings.JOYSTICK_DEADBAND_STICK) {
+               // robot.arm.updateExtension(gamepad2.right_stick_y * -1);
+                robot.arm.updateArm(gamepad2.right_stick_y * -1);
+            }
+        }
 
         if (CommonLogic.oneShot(gamepad2.x, gp2_prev_x)) {
             robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY);
 
+        }
+        if( robot.arm.getCurrentMode() == Arm.Mode.DELIVER_TO_HIGH_BASKET_IDLE ) {
+
+            if (Math.abs(gamepad2.right_stick_y) > Settings.JOYSTICK_DEADBAND_STICK) {
+                robot.arm.updateExtension(gamepad2.right_stick_y * -1);
+                //robot.arm.updateArm(gamepad2.right_stick_y * -1);
+            }
         }
 
         //robot.swing_arm_and_lift.SwingPos(robot.swing_arm_and_lift.LASTSWINGPOSITION + (int)(gamepad2.left_stick_x) * 5);

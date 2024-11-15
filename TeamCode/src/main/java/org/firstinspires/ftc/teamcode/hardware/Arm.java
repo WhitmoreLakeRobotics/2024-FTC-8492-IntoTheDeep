@@ -243,6 +243,12 @@ public class Arm extends BaseHardware {
 
                 break;
             case PICKUP_SUBMERSIBLE_IDLE:
+                break;
+            case DELIVER_TO_HIGH_BASKET_IDLE:
+
+                break;
+
+            case DELIVER_TO_HIGH_CHAMBER_IDLE:
 
                 break;
 
@@ -280,8 +286,8 @@ public class Arm extends BaseHardware {
 
 
                 if( CommonLogic.inRange( EM1.getCurrentPosition(), extTargetPos, 100) ){
-                    CurrentMode = Mode.NO_OP;
                     cmdComplete = true;
+                    CurrentMode = Mode.DELIVER_TO_HIGH_BASKET_IDLE;
                 }
 
                 break;
@@ -313,6 +319,7 @@ public class Arm extends BaseHardware {
                 extTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_HIGH_CHAMBER.ExtPos, Mode.DELIVER_TO_HIGH_CHAMBER.ExtPos,Mode.DELIVER_TO_HIGH_CHAMBER.ExtMax);
                 extPValue = Mode.DELIVER_TO_HIGH_CHAMBER.ExtP;
                 EXTHOLDPOWER = Mode.DELIVER_TO_HIGH_CHAMBER.ExtF;
+                CurrentMode = Mode.DELIVER_TO_HIGH_BASKET_IDLE;
 
                 break;
             case RETRACT_FROM_HIGH_CHAMBER:
@@ -415,10 +422,12 @@ public enum Mode{
     DELIVER_TO_OBSERVATION(         20, 100,0,0,    100,0,695),
     DELIVER_TO_LOW_CHAMBER(         25, 100,0,0,    100,0,5),
     DELIVER_TO_HIGH_CHAMBER(        1900,120,0,540,   200,1,600),
+    DELIVER_TO_HIGH_CHAMBER_IDLE(   1900,120,0,540,   200,1,600),
     RETRACT_FROM_HIGH_CHAMBER(      1900,120,0,0,   100,0,600),
     DELIVER_TO_LOW_BASKET(          2400,100,0,1350,100,0,1500),
     DELIVER_TO_HIGH_BASKET_ARM_ONLY(3300,100,0,0,   100,0,1120),
     DELIVER_TO_HIGH_BASKET_EXT_ONLY(3300,100,0,1550,75,0,1650),
+    DELIVER_TO_HIGH_BASKET_IDLE(    3300,100,0,1550,75,0,1650),
     CLIMB(                          3950,100,0,0,   100,0,5),
     NEUTRAL_POS(                    1480,150,0,0,   150,0,5),
     RETRACT_TO_NEUTRAL_POS(         1480,100,0,0,   100,0,5),

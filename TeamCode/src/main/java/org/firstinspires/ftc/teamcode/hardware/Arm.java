@@ -47,7 +47,7 @@ public class Arm extends BaseHardware {
     private int extTargetPos = 0;
 
 
-    private double extStepSize = 50.0;
+    private double extStepSize = 20.0;
     private double armStepSize = 10.0;
 
     /**

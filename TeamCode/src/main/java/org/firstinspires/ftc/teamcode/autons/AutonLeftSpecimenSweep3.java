@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.autons;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -10,11 +9,11 @@ import org.firstinspires.ftc.teamcode.hardware.Arm;
 import org.firstinspires.ftc.teamcode.hardware.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-@Disabled
-@Autonomous(name = "AutonLeftSpecimen2", group = "Auton")
+//@Disabled
+@Autonomous(name = "AutonLeftSpecimenSweep3", group = "Auton")
 // @Autonomous(...) is the other common choice
 
-public class AutonLeftSpecimen2 extends OpMode {
+public class AutonLeftSpecimenSweep3 extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -54,7 +53,7 @@ public class AutonLeftSpecimen2 extends OpMode {
         robot.hardwareMap = hardwareMap;
         robot.telemetry = telemetry;
         robot.init();
-        telemetry.addData("Test AutonLeftSpecimen2", "Initialized");
+        telemetry.addData("Test AutonLeftSpecimenSweep3", "Initialized");
 
         //Initialize Gyro
         robot.driveTrain.ResetGyro();

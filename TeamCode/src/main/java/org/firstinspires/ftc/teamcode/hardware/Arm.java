@@ -39,7 +39,7 @@ public class Arm extends BaseHardware {
     private int armPValue = 50;
     private int armTargetPos = 0;
 
-    private static final double EXTSPEED = 0.90;
+    private static final double EXTSPEED = 0.60;
     private double EXTHOLDPOWER =0.00;
     private static final int minExtPos = 0;
     private static final int maxExtPos = 1180;
@@ -421,16 +421,16 @@ public enum Mode{
     PICKUP_SUBMERSIBLE_IDLE(        0,  120,0,   0,   120, 0,680),
     DELIVER_TO_OBSERVATION(         20, 100,0,0,    100,0,695),
     DELIVER_TO_LOW_CHAMBER(         25, 100,0,0,    100,0,5),
-    DELIVER_TO_HIGH_CHAMBER(        1900,120,0,540,   200,1,600),
-    DELIVER_TO_HIGH_CHAMBER_IDLE(   1900,120,0,540,   200,1,600),
-    RETRACT_FROM_HIGH_CHAMBER(      1900,120,0,0,   100,0,600),
-    DELIVER_TO_LOW_BASKET(          2400,100,0,1350,100,0,1500),
-    DELIVER_TO_HIGH_BASKET_ARM_ONLY(3300,100,0,0,   100,0,1120),
-    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3300,100,0,1550,75,0,1650),
-    DELIVER_TO_HIGH_BASKET_IDLE(    3300,100,0,1550,75,0,1650),
-    CLIMB(                          3950,100,0,0,   100,0,5),
-    NEUTRAL_POS(                    1480,150,0,0,   150,0,5),
-    RETRACT_TO_NEUTRAL_POS(         1480,100,0,0,   100,0,5),
+    DELIVER_TO_HIGH_CHAMBER(        1850,120,0,540,   200,1,600),
+    DELIVER_TO_HIGH_CHAMBER_IDLE(   1850,120,0,540,   200,1,600),
+    RETRACT_FROM_HIGH_CHAMBER(      1850,120,0,0,   100,0,600),
+    DELIVER_TO_LOW_BASKET(          2350,100,0,1350,100,0,1500),
+    DELIVER_TO_HIGH_BASKET_ARM_ONLY(3250,100,0,0,   100,0,1120),
+    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3250,100,0,1550,75,0,1650),
+    DELIVER_TO_HIGH_BASKET_IDLE(    3250,100,0,1550,75,0,1650),
+    CLIMB(                          3900,100,0,0,   100,0,5),
+    NEUTRAL_POS(                    1430,150,0,0,   150,0,5),
+    RETRACT_TO_NEUTRAL_POS(         1430,100,0,0,   100,0,5),
     STOP(0,2100000000,0,0,2100000000,0,5),
     NO_OP(0, 0, 0, 0, 0, 0, 0);
 

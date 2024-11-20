@@ -1,20 +1,19 @@
 //package org.firstinspires.ftc.robotcontroller.external.samples;
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.RobotLog;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.common.CommonLogic;
 import org.firstinspires.ftc.teamcode.common.Settings;
 import org.firstinspires.ftc.teamcode.hardware.Arm;
-import org.firstinspires.ftc.teamcode.hardware.Intake;
+import org.firstinspires.ftc.teamcode.hardware.Claw;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-@Disabled
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Tele_Op", group = "TeleOp")
-public class Tele_Op extends OpMode {
+//@Disabled
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Tele_Op_Claw", group = "TeleOp")
+public class Tele_Op_Claw extends OpMode {
     private static final String TAGTeleop = "8492-Teleop";
     //RobotTest robot = new RobotTest();
     Robot robot = new Robot();
@@ -240,7 +239,8 @@ public class Tele_Op extends OpMode {
         // Bumpers close and open the gripper
         if (CommonLogic.oneShot(gamepad2.left_bumper, gp2_prev_left_bumper)) {
             robot.arm.setCurrentMode(Arm.Mode.RETRACT_TO_NEUTRAL_POS);
-            robot.intake.setCurrentMode(Intake.Mode.STOP);
+            //robot.intake.setCurrentMode(Intake.Mode.STOP);
+
 
          //   robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.LIME);
 
@@ -252,16 +252,20 @@ public class Tele_Op extends OpMode {
 
         if (CommonLogic.oneShot(gamepad2.right_bumper, gp2_prev_right_bumper)) {
             robot.arm.setCurrentMode(Arm.Mode.CLIMB);
-            robot.intake.setCurrentMode(Intake.Mode.STOP);
+            //robot.intake.setCurrentMode(Intake.Mode.STOP);
+            robot.claw.setCurrentMode( Claw.Mode.CLAW_CLOSE );
+
 
         }
         if (CommonLogic.oneShot(gamepad2.back, gp2_prev_back)){
             //robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.TWINKLES_FOREST_PALETTE);
-            robot.intake.setCurrentMode(Intake.Mode.OUT);
+            //robot.intake.setCurrentMode(Intake.Mode.OUT);
+            robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
         }
 
         if (CommonLogic.oneShot(gamepad2.start, gp2_prev_start)){
-            robot.intake.setCurrentMode(Intake.Mode.IN);
+            //robot.intake.setCurrentMode(Intake.Mode.IN);
+            robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);
         }
         if (gamepad2.start){
      // robot.cmdExcecuteBumpStack();   // this was SetPOS() not setting the mode
@@ -324,16 +328,16 @@ public class Tele_Op extends OpMode {
 
         if (CommonLogic.oneShot(gamepad2.dpad_up, gp2_prev_dpad_up)) {
             robot.arm.setCurrentMode(Arm.Mode.START);
-            robot.intake.setCurrentMode(Intake.Mode.STOP);
+            //robot.intake.setCurrentMode(Intake.Mode.STOP);
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_down, gp2_prev_dpad_down)) {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_GROUND);
-            robot.intake.setCurrentMode(Intake.Mode.IN);
+            //robot.intake.setCurrentMode(Intake.Mode.IN);
         }
         if (CommonLogic.oneShot(gamepad2.dpad_right, gp2_prev_dpad_right)) {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_TANK);
-            robot.intake.setCurrentMode(Intake.Mode.IN);
+            //robot.intake.setCurrentMode(Intake.Mode.IN);
         //    robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
         }
 
@@ -345,7 +349,7 @@ public class Tele_Op extends OpMode {
 
         if (gamepad2.right_trigger > 0.8){
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_SUBMERSIBLE);
-            robot.intake.setCurrentMode(Intake.Mode.IN);
+            //robot.intake.setCurrentMode(Intake.Mode.IN);
         }
         if( robot.arm.getCurrentMode() == Arm.Mode.PICKUP_SUBMERSIBLE_IDLE ) {
 

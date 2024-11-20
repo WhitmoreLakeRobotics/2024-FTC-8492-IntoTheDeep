@@ -37,7 +37,7 @@ public class Intake extends BaseHardware {
 
     private Color SignalColor;
     private double NTKdistance; //in cm
-    private double PickupDistance = 6.0; //in cm
+    private double PickupDistance = 5.0; //in cm
     private double PickupDistanceTol = 1.25; //in cm
 
     private int SensorBlue;

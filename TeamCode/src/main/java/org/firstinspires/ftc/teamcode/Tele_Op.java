@@ -332,8 +332,8 @@ public class Tele_Op extends OpMode {
             robot.intake.setCurrentMode(Intake.Mode.IN);
         }
         if (CommonLogic.oneShot(gamepad2.dpad_right, gp2_prev_dpad_right)) {
-            robot.arm.setCurrentMode(Arm.Mode.PICKUP_TANK);
-            robot.intake.setCurrentMode(Intake.Mode.IN);
+            //robot.arm.setCurrentMode(Arm.Mode.PICKUP_TANK);
+            //robot.intake.setCurrentMode(Intake.Mode.IN);
         //    robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
         }
 

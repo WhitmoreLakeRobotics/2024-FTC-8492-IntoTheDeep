@@ -210,6 +210,11 @@ public class Claw extends BaseHardware {
         WRIST01.setPosition(WristDownPos);
         cmdComplete = true;
     }
+
+    public void WristToPosition( double setPos ){
+        WRIST01.setPosition(setPos);
+        cmdComplete = true;
+    }
     public void doStop(){
         //CurrentMode = Mode.STOP;
         //NTKS01.setPosition(StopPos);

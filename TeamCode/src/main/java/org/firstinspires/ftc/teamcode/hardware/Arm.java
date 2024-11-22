@@ -34,21 +34,35 @@ public class Arm extends BaseHardware {
 
     private static final double ARMSPEED = 0.900;
     private double ARMHOLDPOWER =0.00;
-    private static final int minArmPos = 0;
-    private static final int maxArmPos = 4370;
+    private int minArmPos = 0;
+    private int maxArmPos = 4370;
     private int armPValue = 50;
     private int armTargetPos = 0;
 
     private static final double EXTSPEED = 0.90;
     private double EXTHOLDPOWER =0.00;
-    private static final int minExtPos = 0;
-    private static final int maxExtPos = 1180;
+    //private static final int minExtPos = 0;
+    //private static final int maxExtPos = 1180;
     private int extPValue = 50;
     private int extTargetPos = 0;
 
 
     private double extStepSize = 20.0;
     private double armStepSize = 10.0;
+
+    // Calibration for the different micro adjustment arm movement in different modes
+    private final int PICKUP_SUBMERSIBLE_ARM_POS_MIN = 0;
+    private final int PICKUP_SUBMERSIBLE_ARM_POS_MAX = 0;
+    private final int DELIVER_TO_HIGH_BASKET_ARM_POS_MIN = 0;
+    private final int DELIVER_TO_HIGH_BASKET_ARM_POS_MAX = 0;
+
+    private final int DELIVER_TO_HIGH_CHAMBER_ARM_POS_MIN = 0;
+    private final int DELIVER_TO_HIGH_CHAMBER_ARM_POS_MAX = 0;
+
+    private final int DEFAULT_ARM_POS_MIN = 0;
+    private final int DEFAULT_ARM_POS_MAX = 4370;
+
+
 
     /**
      * Hardware Mappings
@@ -97,6 +111,8 @@ public class Arm extends BaseHardware {
         // Configure the PID limits
         EM1pid.setOutputLimits(-EXTSPEED, EXTSPEED);
 
+        // Init the default ARM min, max position
+        setArmMinMaxPositions( DEFAULT_ARM_POS_MIN, DEFAULT_ARM_POS_MAX );
 
     }
 
@@ -200,17 +216,7 @@ public class Arm extends BaseHardware {
                 EXTHOLDPOWER = Mode.CLIMB.ExtF;
 
                 break;
-            case PICKUP_TANK:
-                armTargetPos = CommonLogic.CapValueint(Mode.PICKUP_TANK.ArmPos, minArmPos,maxArmPos);
-                armPValue = Mode.PICKUP_TANK.ArmP;
-                ARMHOLDPOWER = Mode.PICKUP_TANK.ArmF;
 
-                extTargetPos = CommonLogic.CapValueint(Mode.PICKUP_TANK.ExtPos, Mode.PICKUP_TANK.ExtPos,Mode.PICKUP_TANK.ExtMax);
-                extPValue = Mode.PICKUP_TANK.ExtP;
-                EXTHOLDPOWER = Mode.PICKUP_TANK.ExtF;
-
-
-                break;
             case PICKUP_WALL:
                 armTargetPos = CommonLogic.CapValueint(Mode.PICKUP_WALL.ArmPos, minArmPos,maxArmPos);
                 armPValue = Mode.PICKUP_WALL.ArmP;
@@ -397,6 +403,11 @@ public void resetEncoders(){
     EM1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 }
 
+private void setArmMinMaxPositions( int minPos, int maxPos) {
+    minArmPos = minPos;
+    maxArmPos = maxPos;
+}
+
 public enum Mode{
 /*
    START(0,100,0,0,100,0,5),
@@ -414,20 +425,19 @@ public enum Mode{
     STOP(0,2100000000,0,0,2100000000,0,5);
  */
     START(                          0,  150,0,0,    150,0,5),
-    PICKUP_TANK(                    5,  100,0,0,    100,0,5),
-    PICKUP_GROUND(                  160,100,0,370,  100,1,400),
+    PICKUP_GROUND(                  280,100,0,200,  100,1,400),
     PICKUP_WALL(                    60, 100,0,90,    100,0,95),
     PICKUP_SUBMERSIBLE(             500, 100, 0, 650, 120, 0, 680),
     PICKUP_SUBMERSIBLE_IDLE(        500, 120,0,  500, 120, 0,680),
     DELIVER_TO_OBSERVATION(         20, 100,0,0,    100,0,695),
     DELIVER_TO_LOW_CHAMBER(         25, 100,0,0,    100,0,5),
-    DELIVER_TO_HIGH_CHAMBER(        1850,120,0,540,   200,1,600),
-    DELIVER_TO_HIGH_CHAMBER_IDLE(   1850,120,0,540,   200,1,600),
-    RETRACT_FROM_HIGH_CHAMBER(      1850,120,0,0,   100,0,600),
+    DELIVER_TO_HIGH_CHAMBER(        1950,120,0,540,   200,1,600),
+    DELIVER_TO_HIGH_CHAMBER_IDLE(   1950,120,0,540,   200,1,600),
+    RETRACT_FROM_HIGH_CHAMBER(      1950,120,0,0,   100,0,600),
     DELIVER_TO_LOW_BASKET(          2400,100,0,1350,100,0,1500),
     DELIVER_TO_HIGH_BASKET_ARM_ONLY(3300,100,0,0,   100,0,1120),
-    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3300,100,0,1550,75,0,1650),
-    DELIVER_TO_HIGH_BASKET_IDLE(    3300,100,0,1550,75,0,1650),
+    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3300,100,0,1350,75,0,1650),
+    DELIVER_TO_HIGH_BASKET_IDLE(    3300,100,0,1350,75,0,1650),
     CLIMB(                          3950,100,0,0,   100,0,5),
     NEUTRAL_POS(                    1480,150,0,0,   150,0,5),
     RETRACT_TO_NEUTRAL_POS(         1480,100,0,0,   100,0,5),

@@ -96,12 +96,14 @@ public class AutonLeftClaw extends OpMode {
             case _00_preStart:
                 robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);
                 robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_CHAMBER);
+                runtime.reset();
                 currentStage = stage._10_Drive_Out;
                 break;
             case _10_Drive_Out:
-                robot.driveTrain.CmdDrive(12,40,0.35,0);
-
-                currentStage = stage._30_Drive_Forward;
+                if (runtime.milliseconds() > 500) {
+                    robot.driveTrain.CmdDrive(12, 40, 0.35, 0);
+                    currentStage = stage._30_Drive_Forward;
+                }
                 break;
             /*case _20_Strafe_Right:
                 if(robot.driveTrain.getCmdComplete()){
@@ -133,7 +135,7 @@ public class AutonLeftClaw extends OpMode {
             case _50_Strafe_Left:
                 if(robot.driveTrain.getCmdComplete()){
                     robot.arm.setCurrentMode(Arm.Mode.START);
-                    robot.driveTrain.CmdDrive(28,-90,0.35,0);
+                    robot.driveTrain.CmdDrive(26,-90,0.35,0);
                     currentStage = stage._60_Drive_Foward;
                 }
                 break;
@@ -151,7 +153,7 @@ public class AutonLeftClaw extends OpMode {
                 break;
             case _80_Drive_Left:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(4,-90,0.35,-90); // get to first sample
+                    robot.driveTrain.CmdDrive(3.5,-90,0.35,-90); // get to first sample
                     currentStage = stage._90_Drive_Back;
                 }
                 break;
@@ -169,43 +171,43 @@ public class AutonLeftClaw extends OpMode {
                 break;
             case _100_Drive_Away:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(42,27,0.35,-90);
+                    robot.driveTrain.CmdDrive(42,33,0.35,-90);
                     currentStage = stage._110_Drive_Foward;
                 }
                 break;
             case _110_Drive_Foward:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(4.5,-90,0.35,-90);
+                    robot.driveTrain.CmdDrive(8,-90,0.35,-90);
                     currentStage = stage._120_Sweep;
                 }
                 break;
             case _120_Sweep:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(45,-165,0.35,-90);
+                    robot.driveTrain.CmdDrive(50,-165,0.35,-90);
                     currentStage = stage._130_Drive_Away;
                 }
                 break;
             case _130_Drive_Away:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(40,5,0.35,-90);
+                    robot.driveTrain.CmdDrive(36,14,0.35,-90);
                     currentStage = stage._140_Drive_Foward;
                 }
                 break;
             case _140_Drive_Foward:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(5,-90,0.35,-90);
+                    robot.driveTrain.CmdDrive(10,-90,0.35,-90);
                     currentStage = stage._150_Sweep;
                 }
                 break;
             case _150_Sweep:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(45,-175,0.35,-90);
+                    robot.driveTrain.CmdDrive(52,-175,0.35,-90);
                     currentStage = stage._200_Drive_Forward;
                 }
                 break;
             case _200_Drive_Forward:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(10,20,0.35,-90);
+                    robot.driveTrain.CmdDrive(10,25,0.35,-90);
                     currentStage = stage._210_Turn;
                 }
                 break;
@@ -217,7 +219,7 @@ public class AutonLeftClaw extends OpMode {
                 break;
             case _220_Drive_Forward:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(35,33,0.35,0);
+                    robot.driveTrain.CmdDrive(22,33,0.35,0);
                     currentStage = stage._230_Park;
                 }
                 break;

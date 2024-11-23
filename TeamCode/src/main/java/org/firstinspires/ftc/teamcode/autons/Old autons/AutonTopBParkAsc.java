@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.Arm;
 import org.firstinspires.ftc.teamcode.hardware.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-//@Disabled
+@Disabled
 @Autonomous(name = "AutonTopBParkAsc", group = "Auton")
 // @Autonomous(...) is the other common choice
 

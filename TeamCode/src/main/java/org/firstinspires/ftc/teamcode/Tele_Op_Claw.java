@@ -47,6 +47,7 @@ public class Tele_Op_Claw extends OpMode {
     private boolean gp2_prev_start = false;
     private int tHeading = 0;
     private boolean bAutoTurn = false;
+    private double wristToGroundPosition = 0.57;
 
 
     //*********************************************************************************************
@@ -105,6 +106,11 @@ public class Tele_Op_Claw extends OpMode {
     @Override
     public void start() {
         Runtime.getRuntime();
+
+        // Init arm and intake position
+        robot.arm.setCurrentMode(Arm.Mode.START);
+        robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
+
        // robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.GOLD);
         //robot.signalSign.doUP();
         //robot.swing_arm_and_lift.SetPOS(Swing_Arm_And_Lift.Mode.PICKUP);
@@ -323,7 +329,12 @@ public class Tele_Op_Claw extends OpMode {
 
         if (Math.abs(gamepad2.left_stick_y) > Settings.JOYSTICK_DEADBAND_STICK) {
 
-                robot.claw.WristToPosition( gamepad2.left_stick_y );
+                robot.claw.WristToPosition( (gamepad2.left_stick_y / 5) + wristToGroundPosition  );
+
+        }
+        if (Math.abs(gamepad2.left_stick_y) < Settings.JOYSTICK_DEADBAND_STICK) {
+
+            robot.claw.WristToPosition( (gamepad2.left_stick_y * -1) - wristToGroundPosition );
 
         }
 
@@ -342,7 +353,7 @@ public class Tele_Op_Claw extends OpMode {
         if (CommonLogic.oneShot(gamepad2.dpad_down, gp2_prev_dpad_down)) {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_GROUND);
             robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
-            robot.claw.WristToPosition( 0.57);
+            robot.claw.WristToPosition( wristToGroundPosition);
             //robot.intake.setCurrentMode(Intake.Mode.IN);
         }
         if (CommonLogic.oneShot(gamepad2.dpad_right, gp2_prev_dpad_right)) {
@@ -353,6 +364,7 @@ public class Tele_Op_Claw extends OpMode {
 
         if (CommonLogic.oneShot(gamepad2.dpad_left, gp2_prev_dpad_left)) {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_SUBMERSIBLE);
+            robot.claw.WristToPosition( wristToGroundPosition);
             //robot.arm.setCurrentMode(Arm.Mode.PICKUP_WALL);
   //          robot.intake.setCurrentMode(Intake.Mode.IN);
   //          robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.ORANGE);

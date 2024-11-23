@@ -26,7 +26,7 @@ public class Arm extends BaseHardware {
     BasicPID EM1pid = new BasicPID(0.0006,0.00005,0, 0);
 
 
-    private final boolean calEncoderFlag = false;
+    private final boolean calEncoderFlag = true;
     private boolean cmdComplete = false;
     private Mode CurrentMode = Mode.STOP;
     private DcMotor AM1;
@@ -126,6 +126,8 @@ public class Arm extends BaseHardware {
 
          telemetry.addData("AM1 ", AM1.getCurrentPosition());
          telemetry.addData("EM1 ", EM1.getCurrentPosition());
+
+         CurrentMode = Mode.START;
      }
 
     /**
@@ -345,6 +347,8 @@ public class Arm extends BaseHardware {
                 break;
             case NO_OP:
                 break;
+            case STOP:
+                break;
             default:
                 break;
         }
@@ -427,17 +431,17 @@ public enum Mode{
     START(                          0,  150,0,0,    150,0,5),
     PICKUP_GROUND(                  280,100,0,200,  100,1,400),
     PICKUP_WALL(                    60, 100,0,90,    100,0,95),
-    PICKUP_SUBMERSIBLE(             500, 100, 0, 650, 120, 0, 680),
-    PICKUP_SUBMERSIBLE_IDLE(        500, 120,0,  500, 120, 0,680),
+    PICKUP_SUBMERSIBLE(             650, 100, 0, 950, 120, 0, 680),
+    PICKUP_SUBMERSIBLE_IDLE(        650, 120,0,  950, 120, 0,680),
     DELIVER_TO_OBSERVATION(         20, 100,0,0,    100,0,695),
     DELIVER_TO_LOW_CHAMBER(         25, 100,0,0,    100,0,5),
     DELIVER_TO_HIGH_CHAMBER(        1950,120,0,540,   200,1,600),
     DELIVER_TO_HIGH_CHAMBER_IDLE(   1950,120,0,540,   200,1,600),
     RETRACT_FROM_HIGH_CHAMBER(      1950,120,0,0,   100,0,600),
     DELIVER_TO_LOW_BASKET(          2400,100,0,1350,100,0,1500),
-    DELIVER_TO_HIGH_BASKET_ARM_ONLY(3300,100,0,0,   100,0,1120),
-    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3300,100,0,1350,75,0,1650),
-    DELIVER_TO_HIGH_BASKET_IDLE(    3300,100,0,1350,75,0,1650),
+    DELIVER_TO_HIGH_BASKET_ARM_ONLY(3150,100,0,0,   100,0,1120),
+    DELIVER_TO_HIGH_BASKET_EXT_ONLY(3150,100,0,1450,75,0,1650),
+    DELIVER_TO_HIGH_BASKET_IDLE(    3150,100,0,1450,75,0,1650),
     CLIMB(                          3950,100,0,0,   100,0,5),
     NEUTRAL_POS(                    1480,150,0,0,   150,0,5),
     RETRACT_TO_NEUTRAL_POS(         1480,100,0,0,   100,0,5),

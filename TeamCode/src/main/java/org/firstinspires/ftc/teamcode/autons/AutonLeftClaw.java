@@ -6,14 +6,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.Settings;
 import org.firstinspires.ftc.teamcode.hardware.Arm;
+import org.firstinspires.ftc.teamcode.hardware.Claw;
 import org.firstinspires.ftc.teamcode.hardware.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 //@Disabled
-@Autonomous(name = "AutonLeftSpecimenSweep3", group = "Auton")
+@Autonomous(name = "AutonLeftClaw", group = "Auton")
 // @Autonomous(...) is the other common choice
 
-public class AutonLeftSpecimenSweep3 extends OpMode {
+public class AutonLeftClaw extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -53,7 +54,7 @@ public class AutonLeftSpecimenSweep3 extends OpMode {
         robot.hardwareMap = hardwareMap;
         robot.telemetry = telemetry;
         robot.init();
-        telemetry.addData("Test AutonLeftSpecimenSweep3", "Initialized");
+        telemetry.addData("Test AutonLeftClaw", "Initialized");
 
         //Initialize Gyro
         robot.driveTrain.ResetGyro();
@@ -93,27 +94,30 @@ public class AutonLeftSpecimenSweep3 extends OpMode {
                 currentStage = stage._00_preStart;
                 break;
             case _00_preStart:
+                robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);
+                robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_CHAMBER);
                 currentStage = stage._10_Drive_Out;
                 break;
             case _10_Drive_Out:
-                robot.driveTrain.CmdDrive(3,0,0.35,0);
-                robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_CHAMBER);
-                currentStage = stage._20_Strafe_Right;
+                robot.driveTrain.CmdDrive(12,40,0.35,0);
+
+                currentStage = stage._30_Drive_Forward;
                 break;
-            case _20_Strafe_Right:
+            /*case _20_Strafe_Right:
                 if(robot.driveTrain.getCmdComplete()){
                     robot.driveTrain.CmdDrive(8,90,0.35,0);
                     currentStage = stage._30_Drive_Forward;
                 }
-                break;
+                break;*/
             case _30_Drive_Forward:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(22,0,0.16,0);
+                    robot.driveTrain.CmdDrive(13,0,0.20,0);  // deliver first specimen
                     currentStage = stage._35_Retract_Arm;
                 }
                 break;
             case _35_Retract_Arm:
                 if(robot.driveTrain.getCmdComplete()){
+                    robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
                     robot.arm.setCurrentMode(Arm.Mode.RETRACT_FROM_HIGH_CHAMBER);
                     runtime.reset();
                     currentStage = stage._40_Drive_Back;
@@ -121,13 +125,14 @@ public class AutonLeftSpecimenSweep3 extends OpMode {
                 break;
             case _40_Drive_Back:
                 if(robot.arm.getCmdComlete() || (runtime.milliseconds() > 750)){
-                    robot.driveTrain.CmdDrive(3,-179,0.35,0);
+                    robot.driveTrain.CmdDrive(3,-179,0.35,0);  // back up from specimen
                     robot.arm.setCurrentMode(Arm.Mode.START);
                     currentStage = stage._50_Strafe_Left;
                 }
                 break;
             case _50_Strafe_Left:
                 if(robot.driveTrain.getCmdComplete()){
+                    robot.arm.setCurrentMode(Arm.Mode.START);
                     robot.driveTrain.CmdDrive(28,-90,0.35,0);
                     currentStage = stage._60_Drive_Foward;
                 }
@@ -146,13 +151,13 @@ public class AutonLeftSpecimenSweep3 extends OpMode {
                 break;
             case _80_Drive_Left:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(1,-90,0.35,-90);
+                    robot.driveTrain.CmdDrive(4,-90,0.35,-90); // get to first sample
                     currentStage = stage._90_Drive_Back;
                 }
                 break;
             case _90_Drive_Back:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(30,-179,0.35,-90);
+                    robot.driveTrain.CmdDrive(30,-179,0.35,-90);   // sweep first sample
                     currentStage = stage._95_Deliver;
                 }
                 break;
@@ -164,37 +169,37 @@ public class AutonLeftSpecimenSweep3 extends OpMode {
                 break;
             case _100_Drive_Away:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(36,15,0.35,-90);
+                    robot.driveTrain.CmdDrive(42,27,0.35,-90);
                     currentStage = stage._110_Drive_Foward;
                 }
                 break;
             case _110_Drive_Foward:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(4,-90,0.35,-90);
+                    robot.driveTrain.CmdDrive(4.5,-90,0.35,-90);
                     currentStage = stage._120_Sweep;
                 }
                 break;
             case _120_Sweep:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(30,-165,0.35,-90);
+                    robot.driveTrain.CmdDrive(45,-165,0.35,-90);
                     currentStage = stage._130_Drive_Away;
                 }
                 break;
             case _130_Drive_Away:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(36,5,0.35,-90);
+                    robot.driveTrain.CmdDrive(40,5,0.35,-90);
                     currentStage = stage._140_Drive_Foward;
                 }
                 break;
             case _140_Drive_Foward:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(4,-90,0.35,-90);
+                    robot.driveTrain.CmdDrive(5,-90,0.35,-90);
                     currentStage = stage._150_Sweep;
                 }
                 break;
             case _150_Sweep:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(30,-175,0.35,-90);
+                    robot.driveTrain.CmdDrive(45,-175,0.35,-90);
                     currentStage = stage._200_Drive_Forward;
                 }
                 break;
@@ -212,7 +217,7 @@ public class AutonLeftSpecimenSweep3 extends OpMode {
                 break;
             case _220_Drive_Forward:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(28,33,0.35,0);
+                    robot.driveTrain.CmdDrive(35,33,0.35,0);
                     currentStage = stage._230_Park;
                 }
                 break;

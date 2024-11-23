@@ -332,7 +332,7 @@ public class Tele_Op_Claw extends OpMode {
                 robot.claw.WristToPosition( (gamepad2.left_stick_y / 5) + wristToGroundPosition  );
 
         }
-        if (Math.abs(gamepad2.left_stick_y) < Settings.JOYSTICK_DEADBAND_STICK) {
+        if (Math.abs(gamepad2.left_stick_y) < -Settings.JOYSTICK_DEADBAND_STICK) {
 
             robot.claw.WristToPosition( (gamepad2.left_stick_y * -1) - wristToGroundPosition );
 

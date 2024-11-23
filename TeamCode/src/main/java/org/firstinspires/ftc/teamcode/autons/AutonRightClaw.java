@@ -1,19 +1,19 @@
 package org.firstinspires.ftc.teamcode.autons;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.Settings;
 import org.firstinspires.ftc.teamcode.hardware.Arm;
+import org.firstinspires.ftc.teamcode.hardware.Claw;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-@Disabled
-@Autonomous(name = "AutonRightMultiSpecimen3", group = "Auton")
+//@Disabled
+@Autonomous(name = "AutonRightClaw", group = "Auton")
 // @Autonomous(...) is the other common choice
 
-public class AutonRightMultiSpecimen3 extends OpMode {
+public class AutonRightClaw extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -53,7 +53,7 @@ public class AutonRightMultiSpecimen3 extends OpMode {
         robot.hardwareMap = hardwareMap;
         robot.telemetry = telemetry;
         robot.init();
-        telemetry.addData("Test AutonRightMultiSpecimen3", "Initialized");
+        telemetry.addData("Test AutonRightClaw", "Initialized");
 
         //Initialize Gyro
         robot.driveTrain.ResetGyro();
@@ -93,28 +93,30 @@ public class AutonRightMultiSpecimen3 extends OpMode {
                 currentStage = stage._00_preStart;
                 break;
             case _00_preStart:
+                robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);
                 currentStage = stage._10_Drive_Out;
                 break;
             case _10_Drive_Out:
-                robot.driveTrain.CmdDrive(3,0,0.35,0);
-                robot.arm.setCurrentMode(Arm.Mode.NEUTRAL_POS);
-                currentStage = stage._20_Strafe_Left;
+                robot.driveTrain.CmdDrive(5,-50,0.35,0);
+                robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_CHAMBER);
+                currentStage = stage._30_Drive_Forward;
                 break;
-            case _20_Strafe_Left:
+            /*case _20_Strafe_Left:
                 if(robot.driveTrain.getCmdComplete()){
                     robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_CHAMBER);
                     robot.driveTrain.CmdDrive(2,-90,0.35,0);
                     currentStage = stage._30_Drive_Forward;
                 }
-                break;
+                break;*/
             case _30_Drive_Forward:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(16.5,0,0.16,0);
+                    robot.driveTrain.CmdDrive(24,0,0.20,0);  // hang first specimen
                     currentStage = stage._35_Retract_Arm;
                 }
                 break;
             case _35_Retract_Arm:
                 if(robot.driveTrain.getCmdComplete()){
+                    robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
                     robot.arm.setCurrentMode(Arm.Mode.RETRACT_FROM_HIGH_CHAMBER);
                     runtime.reset();
                     currentStage = stage._40_Drive_Back;
@@ -134,13 +136,14 @@ public class AutonRightMultiSpecimen3 extends OpMode {
                 break;
             case _46_Drive_To_Side_Wall:
                 if (robot.driveTrain.getCmdComplete()) {
-                    robot.driveTrain.CmdDrive(25.5,70,0.40,90);
+                    robot.driveTrain.CmdDrive(26.5,70,0.40,90);
                     currentStage = stage._47_Drive_Past_Sample;
                 }
                 break;
             case _47_Drive_Past_Sample:
                 if (robot.driveTrain.getCmdComplete()) {
-                    robot.arm.setCurrentMode(Arm.Mode.NEUTRAL_POS);
+                    robot.arm.setCurrentMode(Arm.Mode.START);
+                    robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
                     robot.driveTrain.CmdDrive(18,0,0.40,90);
                     currentStage = stage._48_Drive_To_Side_Wall;
                 }
@@ -148,57 +151,54 @@ public class AutonRightMultiSpecimen3 extends OpMode {
             case _48_Drive_To_Side_Wall:
                 if (robot.driveTrain.getCmdComplete()) {
                     //robot.arm.setCurrentMode(Arm.Mode.PICKUP_WALL);
-                    robot.driveTrain.CmdDrive(4,90,0.35,90);  // surround first sample
+                    robot.driveTrain.CmdDrive(4.2,90,0.35,90);
                     currentStage = stage._49_Sweep_Specimen;
                 }
                 break;
             case _49_Sweep_Specimen:
                 if (robot.driveTrain.getCmdComplete()) {
-                    robot.driveTrain.CmdDrive(35,-175,0.75,90);  // first sweep to wall
-                    currentStage = stage._49_5_Back_Up;
-                }
-                break;
-            case _49_5_Back_Up:
-                if (robot.driveTrain.getCmdComplete()) {
-                    robot.driveTrain.CmdDrive(7,-75,0.35,90); // back away from obs zone
-                    currentStage = stage._50_Drive_Out;
-                }
-                break;
-            case _50_Drive_Out:
-                if(robot.driveTrain.getCmdComplete()) {
-                    robot.driveTrain.CmdDrive(29,22,0.55,90);  // go towards second sweep
-                    currentStage = stage._52_Drive_Forward;
-                }
-                break;
-            case _52_Drive_Forward:
-                if (robot.driveTrain.getCmdComplete()) {
-                    robot.driveTrain.CmdDrive(4,90,0.35,90);  // surround second sample
-                    currentStage = stage._53_Drive_Back;
-                }
-                break;
-            case _53_Drive_Back:
-                if (robot.driveTrain.getCmdComplete()) {
-                    robot.arm.setCurrentMode(Arm.Mode.PICKUP_WALL);
-                    robot.driveTrain.CmdDrive(36,-175,0.65,90);  // second sweep to wall
+                    robot.arm.setCurrentMode(Arm.Mode.START);
+                    robot.driveTrain.CmdDrive(53,170,0.55,90);  // sweep first specimen to wall
                     currentStage = stage._55_Pick_Up_Specimen;
                 }
                 break;
+                /*case _50_Strafe_Right:
+                if(robot.driveTrain.getCmdComplete()){
+                    robot.arm.setCurrentMode(Arm.Mode.NEUTRAL_POS);
+                    robot.driveTrain.CmdDrive(44,90,0.35,90);
+                    currentStage = stage._52_Drive_To_Wall;
+                }
+                break;
+            case _52_Drive_To_Wall:
+                if (robot.driveTrain.getCmdComplete()) {
+                    robot.arm.setCurrentMode(Arm.Mode.PICKUP_WALL);
+                    robot.driveTrain.CmdDrive(10,-179,0.35,90);
+                    currentStage = stage._55_Pick_Up_Specimen;
+                }
+                break;*/
             case _55_Pick_Up_Specimen:
                 if (robot.driveTrain.getCmdComplete()) {
-                    robot.driveTrain.CmdDrive(14,90,.30,90);  // pick up first specimen
+                    robot.driveTrain.CmdDrive(11,90,0.28,90);
+                    currentStage = stage._57_Close_Claw;
+                }
+                break;
+            case _57_Close_Claw:
+                if (robot.driveTrain.getCmdComplete()) {
+                    robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);  // pick up specimen 2
+                    runtime.reset();
                     currentStage = stage._60_Lift_Arm;
                 }
                 break;
             case _60_Lift_Arm:
-                if (robot.driveTrain.getCmdComplete())     {
+                if (runtime.milliseconds() > 500)     {
                     robot.arm.setCurrentMode(Arm.Mode.NEUTRAL_POS);
                     runtime.reset();
                     currentStage = stage._70_Go_Back;
                 }
                 break;
             case _70_Go_Back:
-                if (runtime.milliseconds() > 1000) {
-                    robot.driveTrain.CmdDrive(25,-89,0.75,90);  // back up with first specimen
+                if (runtime.milliseconds() > 500) {
+                    robot.driveTrain.CmdDrive(31,-89,0.55,90);
                     currentStage = stage._80_Turn;
                 }
                 break;
@@ -218,12 +218,13 @@ public class AutonRightMultiSpecimen3 extends OpMode {
             case _90_Place_Specimen:
                 if (robot.driveTrain.getCmdComplete()) {
 
-                    robot.driveTrain.CmdDrive(21,0,0.35,0);   // place first specimen
+                    robot.driveTrain.CmdDrive(25,0,0.35,0);  // hang specimen 2
                     currentStage = stage._100_Retract_Arm;
                 }
                 break;
             case _100_Retract_Arm:
                 if(robot.driveTrain.getCmdComplete()){
+                   robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
                     robot.arm.setCurrentMode(Arm.Mode.RETRACT_FROM_HIGH_CHAMBER);
                     runtime.reset();
                     currentStage = stage._120_Turn;
@@ -231,6 +232,7 @@ public class AutonRightMultiSpecimen3 extends OpMode {
                 break;
             case _120_Turn:
                 if(robot.arm.getCmdComlete() || (runtime.milliseconds() > 750)){
+                    robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
                     robot.driveTrain.CmdDrive(1,-179,0.35,0);
                     currentStage = stage._130_Drive_To_Wall;
                 }
@@ -244,19 +246,26 @@ public class AutonRightMultiSpecimen3 extends OpMode {
 
             case _135_Pickup_Speciman:
                 if (robot.driveTrain.getCmdComplete()) {
-                    robot.arm.setCurrentMode(Arm.Mode.PICKUP_WALL);
-                    robot.driveTrain.CmdDrive(43,128,0.75,90);  // drive to pick up second specimen
+                    robot.arm.setCurrentMode(Arm.Mode.START);
+                    robot.driveTrain.CmdDrive(49,135,0.55,90);
                     currentStage = stage._137_Drive_To_Wall;
                 }
                 break;
             case _137_Drive_To_Wall:
                 if (robot.driveTrain.getCmdComplete()) {
-                    robot.driveTrain.CmdDrive(14,90,0.30,90);  // pick up specimen 2
-                    currentStage = stage._138_Arm;
+                    robot.driveTrain.CmdDrive(14,90,0.35,90);
+                    currentStage = stage._138_Close_Claw;
                 }
                 break;
-            case _138_Arm:
-                if (robot.driveTrain.getCmdComplete())     {
+            case _138_Close_Claw:
+                if (robot.driveTrain.getCmdComplete()) {
+                    robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);
+                    runtime.reset();
+                    currentStage = stage._139_Arm;
+                }
+                break;
+            case _139_Arm:
+                if (runtime.milliseconds() > 500)     {
                     robot.arm.setCurrentMode(Arm.Mode.NEUTRAL_POS);
                     runtime.reset();
                     currentStage = stage._140_Back_Up;
@@ -264,7 +273,7 @@ public class AutonRightMultiSpecimen3 extends OpMode {
                 break;
             case _140_Back_Up:
                 if (runtime.milliseconds() > 500)     {
-                    robot.driveTrain.CmdDrive(28,-86,0.75,90);  // back up with second specimen
+                    robot.driveTrain.CmdDrive(38,-86,0.55,90);
                     currentStage = stage._150_Turn;
                 }
                 break;
@@ -277,12 +286,13 @@ public class AutonRightMultiSpecimen3 extends OpMode {
                 break;
             case _160_Place:
                 if (robot.driveTrain.getCmdComplete()) {
-                    robot.driveTrain.CmdDrive(20,0,0.35,0);  // deliver second specimen
+                    robot.driveTrain.CmdDrive(22,0,0.35,0);
                     currentStage = stage._165_Retract_Arm;
                 }
                 break;
             case _165_Retract_Arm:
                 if(robot.driveTrain.getCmdComplete()){
+                    robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
                     robot.arm.setCurrentMode(Arm.Mode.RETRACT_FROM_HIGH_CHAMBER);
                     runtime.reset();
                     currentStage = stage._170_Backup;
@@ -297,8 +307,9 @@ public class AutonRightMultiSpecimen3 extends OpMode {
                 break;
             case _190_Park:
                 if (robot.driveTrain.getCmdComplete()) {
+                    robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
                     robot.arm.setCurrentMode(Arm.Mode.START);
-                    robot.driveTrain.CmdDrive(57,130,1.0,0);   // park
+                    robot.driveTrain.CmdDrive(60,115,0.55,0);
                     currentStage = stage._200_End;
                 }
                 break;
@@ -308,8 +319,6 @@ public class AutonRightMultiSpecimen3 extends OpMode {
 
 
                 }
-
-
                 break;
         }
 
@@ -338,11 +347,10 @@ public class AutonRightMultiSpecimen3 extends OpMode {
         _47_Drive_Past_Sample,
         _48_Drive_To_Side_Wall,
         _49_Sweep_Specimen,
-        _49_5_Back_Up,
-        _50_Drive_Out,
-        _52_Drive_Forward,
-        _53_Drive_Back,
+        _50_Strafe_Right,
+        _52_Drive_To_Wall,
         _55_Pick_Up_Specimen,
+        _57_Close_Claw,
         _60_Lift_Arm,
         _70_Go_Back,
         _80_Turn,
@@ -354,7 +362,8 @@ public class AutonRightMultiSpecimen3 extends OpMode {
         _130_Drive_To_Wall,
         _135_Pickup_Speciman,
         _137_Drive_To_Wall,
-        _138_Arm,
+        _138_Close_Claw,
+        _139_Arm,
         _140_Back_Up,
         _150_Turn,
         _160_Place,

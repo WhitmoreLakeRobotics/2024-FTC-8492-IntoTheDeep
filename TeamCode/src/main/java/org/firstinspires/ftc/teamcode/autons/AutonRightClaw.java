@@ -110,7 +110,7 @@ public class AutonRightClaw extends OpMode {
                 break;*/
             case _30_Drive_Forward:
                 if(robot.driveTrain.getCmdComplete()){
-                    robot.driveTrain.CmdDrive(24,0,0.20,0);  // hang first specimen
+                    robot.driveTrain.CmdDrive(25,0,0.20,0);  // hang first specimen
                     currentStage = stage._35_Retract_Arm;
                 }
                 break;
@@ -198,7 +198,7 @@ public class AutonRightClaw extends OpMode {
                 break;
             case _70_Go_Back:
                 if (runtime.milliseconds() > 500) {
-                    robot.driveTrain.CmdDrive(31,-89,0.55,90);
+                    robot.driveTrain.CmdDrive(34,-89,0.55,90);
                     currentStage = stage._80_Turn;
                 }
                 break;
@@ -247,7 +247,7 @@ public class AutonRightClaw extends OpMode {
             case _135_Pickup_Speciman:
                 if (robot.driveTrain.getCmdComplete()) {
                     robot.arm.setCurrentMode(Arm.Mode.START);
-                    robot.driveTrain.CmdDrive(49,135,0.55,90);
+                    robot.driveTrain.CmdDrive(51,128,0.55,90);
                     currentStage = stage._137_Drive_To_Wall;
                 }
                 break;

@@ -260,13 +260,17 @@ public class Tele_Op_Claw extends OpMode {
         if (CommonLogic.oneShot(gamepad2.right_bumper, gp2_prev_right_bumper)) {
             robot.arm.setCurrentMode(Arm.Mode.CLIMB);
             //robot.intake.setCurrentMode(Intake.Mode.STOP);
+            robot.claw.WristToPosition( wristToGroundPosition );
             robot.claw.setCurrentMode( Claw.Mode.CLAW_CLOSE );
 
 
         }
         if (CommonLogic.oneShot(gamepad2.back, gp2_prev_back)){
+            robot.arm.setCurrentMode(Arm.Mode.START);
+            robot.arm.resetEncoders();
             //robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.TWINKLES_FOREST_PALETTE);
             //robot.intake.setCurrentMode(Intake.Mode.OUT);
+            robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
             robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
         }
 

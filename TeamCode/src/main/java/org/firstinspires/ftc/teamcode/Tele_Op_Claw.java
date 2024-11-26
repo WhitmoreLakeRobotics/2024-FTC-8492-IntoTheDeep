@@ -47,7 +47,8 @@ public class Tele_Op_Claw extends OpMode {
     private boolean gp2_prev_start = false;
     private int tHeading = 0;
     private boolean bAutoTurn = false;
-    private double wristToGroundPosition = 0.57;
+    private double wristToGroundPosition = 0.65;
+    private double wristToSubPosition = 0.57;
 
 
     //*********************************************************************************************
@@ -276,7 +277,7 @@ public class Tele_Op_Claw extends OpMode {
 
         if (CommonLogic.oneShot(gamepad2.start, gp2_prev_start)){
             //robot.intake.setCurrentMode(Intake.Mode.IN);
-            robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);
+            //robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);
         }
         if (gamepad2.start){
             // robot.cmdExcecuteBumpStack();   // this was SetPOS() not setting the mode
@@ -333,12 +334,12 @@ public class Tele_Op_Claw extends OpMode {
 
         if (Math.abs(gamepad2.left_stick_y) > Settings.JOYSTICK_DEADBAND_STICK) {
 
-                robot.claw.WristToPosition( (gamepad2.left_stick_y / 5) + wristToGroundPosition  );
+                robot.claw.WristToPosition( ( (gamepad2.left_stick_y * -1) / 10) + wristToSubPosition  );
 
         }
         if (Math.abs(gamepad2.left_stick_y) < -Settings.JOYSTICK_DEADBAND_STICK) {
 
-            robot.claw.WristToPosition( (gamepad2.left_stick_y * -1) - wristToGroundPosition );
+            robot.claw.WristToPosition( ( (gamepad2.left_stick_y) / 10) - wristToSubPosition );
 
         }
 
@@ -368,7 +369,8 @@ public class Tele_Op_Claw extends OpMode {
 
         if (CommonLogic.oneShot(gamepad2.dpad_left, gp2_prev_dpad_left)) {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_SUBMERSIBLE);
-            robot.claw.WristToPosition( wristToGroundPosition);
+            robot.claw.WristToPosition( wristToSubPosition);
+            robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
             //robot.arm.setCurrentMode(Arm.Mode.PICKUP_WALL);
   //          robot.intake.setCurrentMode(Intake.Mode.IN);
   //          robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.ORANGE);

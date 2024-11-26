@@ -26,7 +26,7 @@ public class Arm extends BaseHardware {
     BasicPID EM1pid = new BasicPID(0.0006,0.00005,0, 0);
 
 
-    private final boolean calEncoderFlag = true;
+    private final boolean calEncoderFlag = false;
     private boolean cmdComplete = false;
     private Mode CurrentMode = Mode.STOP;
     private DcMotor AM1;
@@ -429,7 +429,7 @@ public enum Mode{
     STOP(0,2100000000,0,0,2100000000,0,5);
  */
     START(                          0,  150,0,0,    150,0,5),
-    PICKUP_GROUND(                  280,100,0,200,  100,1,400),
+    PICKUP_GROUND(                  240,100,0,200,  100,1,400),
     PICKUP_WALL(                    60, 100,0,90,    100,0,95),
     PICKUP_SUBMERSIBLE(             620, 100, 0, 950, 120, 0, 680),
     PICKUP_SUBMERSIBLE_IDLE(        650, 120,0,  950, 120, 0,680),

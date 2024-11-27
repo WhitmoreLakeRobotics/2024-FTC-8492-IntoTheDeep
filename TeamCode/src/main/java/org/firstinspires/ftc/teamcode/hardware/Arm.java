@@ -26,7 +26,7 @@ public class Arm extends BaseHardware {
     BasicPID EM1pid = new BasicPID(0.0006,0.00005,0, 0);
 
 
-    private final boolean calEncoderFlag = false;
+    private final boolean calEncoderFlag = true;
     private boolean cmdComplete = false;
     private Mode CurrentMode = Mode.STOP;
     private DcMotor AM1;
@@ -251,13 +251,9 @@ public class Arm extends BaseHardware {
 
                 break;
             case PICKUP_SUBMERSIBLE_IDLE:
-                break;
+            case PICKUP_SIDE_SUB_IDLE:
             case DELIVER_TO_HIGH_BASKET_IDLE:
-
-                break;
-
             case DELIVER_TO_HIGH_CHAMBER_IDLE:
-
                 break;
 
             case DELIVER_TO_LOW_BASKET:
@@ -299,6 +295,35 @@ public class Arm extends BaseHardware {
                 }
 
                 break;
+            case PICKUP_SIDE_SUB_ARM_ONLY:
+                cmdComplete = false;
+                armTargetPos = CommonLogic.CapValueint(Mode.PICKUP_SIDE_SUB_ARM_ONLY.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.PICKUP_SIDE_SUB_ARM_ONLY.ArmP;
+                ARMHOLDPOWER = Mode.PICKUP_SIDE_SUB_ARM_ONLY.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.PICKUP_SIDE_SUB_ARM_ONLY.ExtPos, Mode.PICKUP_SIDE_SUB_ARM_ONLY.ExtPos,Mode.PICKUP_SIDE_SUB_ARM_ONLY.ExtMax);
+                extPValue = Mode.PICKUP_SIDE_SUB_ARM_ONLY.ExtP;
+                EXTHOLDPOWER = Mode.PICKUP_SIDE_SUB_ARM_ONLY.ExtF;
+
+
+                if (CommonLogic.inRange( AM1.getCurrentPosition(), armTargetPos, 100)){
+                    CurrentMode = Mode.PICKUP_SIDE_SUB_EXT_ONLY;
+
+                }
+                break;
+
+            case PICKUP_SIDE_SUB_EXT_ONLY:
+                extTargetPos = CommonLogic.CapValueint(Mode.PICKUP_SIDE_SUB_EXT_ONLY.ExtPos, Mode.PICKUP_SIDE_SUB_EXT_ONLY.ExtPos,Mode.PICKUP_SIDE_SUB_EXT_ONLY.ExtMax);
+                extPValue = Mode.PICKUP_SIDE_SUB_EXT_ONLY.ExtP;
+                EXTHOLDPOWER = Mode.PICKUP_SIDE_SUB_EXT_ONLY.ExtF;
+
+
+                if( CommonLogic.inRange( EM1.getCurrentPosition(), extTargetPos, 100) ){
+                    cmdComplete = true;
+                    CurrentMode = Mode.DELIVER_TO_HIGH_BASKET_IDLE;
+                }
+
+                break;
             case DELIVER_TO_LOW_CHAMBER:
                 armTargetPos = CommonLogic.CapValueint(Mode.DELIVER_TO_LOW_CHAMBER.ArmPos, minArmPos,maxArmPos);
                 armPValue = Mode.DELIVER_TO_LOW_CHAMBER.ArmP;
@@ -330,6 +355,17 @@ public class Arm extends BaseHardware {
                 CurrentMode = Mode.DELIVER_TO_HIGH_BASKET_IDLE;
 
                 break;
+            case BACKDROP:
+                armTargetPos = CommonLogic.CapValueint(Mode.BACKDROP.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.BACKDROP.ArmP;
+                ARMHOLDPOWER = Mode.BACKDROP.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.BACKDROP.ExtPos, Mode.BACKDROP.ExtPos,Mode.BACKDROP.ExtMax);
+                extPValue = Mode.BACKDROP.ExtP;
+                EXTHOLDPOWER = Mode.BACKDROP.ExtF;
+
+                break;
+
             case RETRACT_FROM_HIGH_CHAMBER:
                 armTargetPos = CommonLogic.CapValueint(Mode.RETRACT_FROM_HIGH_CHAMBER.ArmPos, minArmPos,maxArmPos);
                 armPValue = Mode.RETRACT_FROM_HIGH_CHAMBER.ArmP;
@@ -442,6 +478,10 @@ public enum Mode{
     DELIVER_TO_HIGH_BASKET_ARM_ONLY(3150,100,0,0,   100,0,1120),
     DELIVER_TO_HIGH_BASKET_EXT_ONLY(3150,100,0,1450,75,0,1650),
     DELIVER_TO_HIGH_BASKET_IDLE(    3150,100,0,1450,75,0,1650),
+    PICKUP_SIDE_SUB_ARM_ONLY(       650,150,0,0,150,0,0),
+    PICKUP_SIDE_SUB_EXT_ONLY(       650,150,0,750,150,0,800),
+    PICKUP_SIDE_SUB_IDLE(           650,150,0,750,150,0,800),
+    BACKDROP(                       4600,150,0,1390,150,0,1500),
     CLIMB(                          3950,100,0,0,   100,0,5),
     NEUTRAL_POS(                    1480,150,0,0,   150,0,5),
     RETRACT_TO_NEUTRAL_POS(         1480,100,0,0,   100,0,5),

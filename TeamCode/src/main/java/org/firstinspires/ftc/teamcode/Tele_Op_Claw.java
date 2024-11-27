@@ -280,6 +280,7 @@ public class Tele_Op_Claw extends OpMode {
             //robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);
         }
         if (gamepad2.start){
+            robot.arm.setCurrentMode(Arm.Mode.BACKDROP);
             // robot.cmdExcecuteBumpStack();   // this was SetPOS() not setting the mode
             // robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.AQUA);
 
@@ -362,8 +363,9 @@ public class Tele_Op_Claw extends OpMode {
             //robot.intake.setCurrentMode(Intake.Mode.IN);
         }
         if (CommonLogic.oneShot(gamepad2.dpad_right, gp2_prev_dpad_right)) {
-            // robot.arm.setCurrentMode(Arm.Mode.PICKUP_TANK);
-            //robot.intake.setCurrentMode(Intake.Mode.IN);
+            robot.arm.setCurrentMode(Arm.Mode.PICKUP_SIDE_SUB_ARM_ONLY);
+            robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
+            robot.claw.WristToPosition( wristToGroundPosition);
         //    robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
         }
 

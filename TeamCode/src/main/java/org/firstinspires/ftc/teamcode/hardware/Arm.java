@@ -35,7 +35,7 @@ public class Arm extends BaseHardware {
     private static final double ARMSPEED = 0.900;
     private double ARMHOLDPOWER =0.00;
     private int minArmPos = 0;
-    private int maxArmPos = 4370;
+    private int maxArmPos = 4700;
     private int armPValue = 50;
     private int armTargetPos = 0;
 
@@ -355,16 +355,37 @@ public class Arm extends BaseHardware {
                 CurrentMode = Mode.DELIVER_TO_HIGH_BASKET_IDLE;
 
                 break;
-            case BACKDROP:
-                armTargetPos = CommonLogic.CapValueint(Mode.BACKDROP.ArmPos, minArmPos,maxArmPos);
-                armPValue = Mode.BACKDROP.ArmP;
-                ARMHOLDPOWER = Mode.BACKDROP.ArmF;
 
-                extTargetPos = CommonLogic.CapValueint(Mode.BACKDROP.ExtPos, Mode.BACKDROP.ExtPos,Mode.BACKDROP.ExtMax);
-                extPValue = Mode.BACKDROP.ExtP;
-                EXTHOLDPOWER = Mode.BACKDROP.ExtF;
+            case BACKDROP_HIGH_BASKET_ARM_ONLY:
+                cmdComplete = false;
+                armTargetPos = CommonLogic.CapValueint(Mode.BACKDROP_HIGH_BASKET_ARM_ONLY.ArmPos, minArmPos,maxArmPos);
+                armPValue = Mode.BACKDROP_HIGH_BASKET_ARM_ONLY.ArmP;
+                ARMHOLDPOWER = Mode.BACKDROP_HIGH_BASKET_ARM_ONLY.ArmF;
+
+                extTargetPos = CommonLogic.CapValueint(Mode.BACKDROP_HIGH_BASKET_ARM_ONLY.ExtPos, Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtPos,Mode.DELIVER_TO_HIGH_BASKET_ARM_ONLY.ExtMax);
+                extPValue = Mode.BACKDROP_HIGH_BASKET_ARM_ONLY.ExtP;
+                EXTHOLDPOWER = Mode.BACKDROP_HIGH_BASKET_ARM_ONLY.ExtF;
+
+
+                if (CommonLogic.inRange( AM1.getCurrentPosition(), armTargetPos, 100)){
+                    CurrentMode = Mode.BACKDROP_HIGH_BASKET_EXT_ONLY;
+
+                }
+                break;
+
+            case BACKDROP_HIGH_BASKET_EXT_ONLY:
+                extTargetPos = CommonLogic.CapValueint(Mode.BACKDROP_HIGH_BASKET_EXT_ONLY.ExtPos, Mode.BACKDROP_HIGH_BASKET_EXT_ONLY.ExtPos,Mode.BACKDROP_HIGH_BASKET_EXT_ONLY.ExtMax);
+                extPValue = Mode.BACKDROP_HIGH_BASKET_EXT_ONLY.ExtP;
+                EXTHOLDPOWER = Mode.BACKDROP_HIGH_BASKET_EXT_ONLY.ExtF;
+
+
+                if( CommonLogic.inRange( EM1.getCurrentPosition(), extTargetPos, 100) ){
+                    cmdComplete = true;
+                    CurrentMode = Mode.DELIVER_TO_HIGH_BASKET_IDLE;
+                }
 
                 break;
+
 
             case RETRACT_FROM_HIGH_CHAMBER:
                 armTargetPos = CommonLogic.CapValueint(Mode.RETRACT_FROM_HIGH_CHAMBER.ArmPos, minArmPos,maxArmPos);
@@ -481,7 +502,8 @@ public enum Mode{
     PICKUP_SIDE_SUB_ARM_ONLY(       650,150,0,0,150,0,0),
     PICKUP_SIDE_SUB_EXT_ONLY(       650,150,0,750,150,0,800),
     PICKUP_SIDE_SUB_IDLE(           650,150,0,750,150,0,800),
-    BACKDROP(                       4600,150,0,1390,150,0,1500),
+    BACKDROP_HIGH_BASKET_ARM_ONLY( 4600,150,0,0,150,0,0),
+    BACKDROP_HIGH_BASKET_EXT_ONLY( 4600,150,0,1390,150,0,1500),
     CLIMB(                          3950,100,0,0,   100,0,5),
     NEUTRAL_POS(                    1480,150,0,0,   150,0,5),
     RETRACT_TO_NEUTRAL_POS(         1480,100,0,0,   100,0,5),

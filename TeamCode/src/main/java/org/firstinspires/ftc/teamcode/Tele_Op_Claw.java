@@ -280,7 +280,8 @@ public class Tele_Op_Claw extends OpMode {
             //robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);
         }
         if (gamepad2.start){
-            robot.arm.setCurrentMode(Arm.Mode.BACKDROP);
+            robot.arm.setCurrentMode(Arm.Mode.BACKDROP_HIGH_BASKET_ARM_ONLY);
+            robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
             // robot.cmdExcecuteBumpStack();   // this was SetPOS() not setting the mode
             // robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.AQUA);
 

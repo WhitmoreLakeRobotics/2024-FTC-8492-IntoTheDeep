@@ -37,6 +37,8 @@ public class Claw extends BaseHardware {
 
     private final double WristUpPos = 1;
     private final double WristDownPos = 0;
+    private double wristToGroundPosition = 0.65;
+    private double wristToSubPosition = 0.57;
 
 
     private Color SignalColor;
@@ -134,6 +136,14 @@ public class Claw extends BaseHardware {
                 WristDown();
                 CurrentMode = Mode.IDLE;
                 break;
+            case WRIST_TO_GROUND:
+                WristToGroundPosition();
+                CurrentMode = Mode.IDLE;
+                break;
+            case WRIST_TO_SIDE_SUBMERSIBLE:
+                WristToSideSubmersiblePosition();
+                CurrentMode = Mode.IDLE;
+                break;
             case IDLE:
 
                 break;
@@ -215,6 +225,23 @@ public class Claw extends BaseHardware {
         WRIST01.setPosition(setPos);
         cmdComplete = true;
     }
+
+    public void WristToGroundPosition(){
+        WRIST01.setPosition(wristToGroundPosition);
+        cmdComplete = true;
+    }
+    public void WristToSideSubmersiblePosition(){
+        WRIST01.setPosition(wristToSubPosition);
+        cmdComplete = true;
+    }
+
+    public double getWristToGroundPosition(){
+        return wristToGroundPosition;
+    }
+    public double getWristToSideSubmersiblePosition(){
+        return wristToSubPosition;
+    }
+
     public void doStop(){
         //CurrentMode = Mode.STOP;
         //NTKS01.setPosition(StopPos);
@@ -232,6 +259,8 @@ public class Claw extends BaseHardware {
         CLAW_OPEN,
         WRIST_UP,
         WRIST_DOWN,
+        WRIST_TO_GROUND,
+        WRIST_TO_SIDE_SUBMERSIBLE,
         IDLE,
         STOP;
 

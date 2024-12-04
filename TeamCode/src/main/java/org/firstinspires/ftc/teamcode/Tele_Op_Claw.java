@@ -47,7 +47,7 @@ public class Tele_Op_Claw extends OpMode {
     private boolean gp2_prev_start = false;
     private int tHeading = 0;
     private boolean bAutoTurn = false;
-    private double wristToGroundPosition = 0.65;
+
     private double wristToSubPosition = 0.57;
 
 
@@ -261,7 +261,7 @@ public class Tele_Op_Claw extends OpMode {
         if (CommonLogic.oneShot(gamepad2.right_bumper, gp2_prev_right_bumper)) {
             robot.arm.setCurrentMode(Arm.Mode.CLIMB);
             //robot.intake.setCurrentMode(Intake.Mode.STOP);
-            robot.claw.WristToPosition( wristToGroundPosition );
+            robot.claw.setCurrentMode(Claw.Mode.WRIST_TO_GROUND);
             robot.claw.setCurrentMode( Claw.Mode.CLAW_CLOSE );
 
 
@@ -336,12 +336,14 @@ public class Tele_Op_Claw extends OpMode {
 
         if (Math.abs(gamepad2.left_stick_y) > Settings.JOYSTICK_DEADBAND_STICK) {
 
-                robot.claw.WristToPosition( ( (gamepad2.left_stick_y * -1) / 10) + wristToSubPosition  );
+                robot.claw.WristToPosition( ( (gamepad2.left_stick_y * -1) / 10)
+                        + robot.claw.getWristToSideSubmersiblePosition() );
 
         }
         if (Math.abs(gamepad2.left_stick_y) < -Settings.JOYSTICK_DEADBAND_STICK) {
 
-            robot.claw.WristToPosition( ( (gamepad2.left_stick_y) / 10) - wristToSubPosition );
+            robot.claw.WristToPosition( ( (gamepad2.left_stick_y) / 10)
+                    - robot.claw.getWristToSideSubmersiblePosition() );
 
         }
 
@@ -360,19 +362,19 @@ public class Tele_Op_Claw extends OpMode {
         if (CommonLogic.oneShot(gamepad2.dpad_down, gp2_prev_dpad_down)) {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_GROUND);
             robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
-            robot.claw.WristToPosition( wristToGroundPosition);
+            robot.claw.setCurrentMode(Claw.Mode.WRIST_TO_GROUND);
             //robot.intake.setCurrentMode(Intake.Mode.IN);
         }
         if (CommonLogic.oneShot(gamepad2.dpad_right, gp2_prev_dpad_right)) {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_SIDE_SUB_ARM_ONLY);
             robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
-            robot.claw.WristToPosition( wristToGroundPosition);
+            robot.claw.setCurrentMode(Claw.Mode.WRIST_TO_GROUND);
         //    robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_left, gp2_prev_dpad_left)) {
             robot.arm.setCurrentMode(Arm.Mode.PICKUP_SUBMERSIBLE);
-            robot.claw.WristToPosition( wristToSubPosition);
+            robot.claw.setCurrentMode(Claw.Mode.WRIST_TO_SIDE_SUBMERSIBLE);
             robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
             //robot.arm.setCurrentMode(Arm.Mode.PICKUP_WALL);
   //          robot.intake.setCurrentMode(Intake.Mode.IN);

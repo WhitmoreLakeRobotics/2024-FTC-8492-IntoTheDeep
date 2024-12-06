@@ -96,21 +96,24 @@ public class AutonLeftBasket extends OpMode {
             case _00_preStart:
                 robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);
                 robot.arm.setCurrentMode(Arm.Mode.BACKDROP_HIGH_BASKET_ARM_ONLY);
-                robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
+                //robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
                 currentStage = stage._10_Strafe_To_Wall;
                 break;
             case _10_Strafe_To_Wall:
-                robot.driveTrain.CmdDrive(24, -62, 0.35, 30);
+                robot.driveTrain.CmdDrive(20, -62, 0.35, 30);
                 runtime.reset();
                 currentStage = stage._15_Back_Up;
                 break;
             case _15_Back_Up:
                 if (robot.driveTrain.getCmdComplete()) {
-                    robot.driveTrain.CmdDrive(2.5, -179, 0.35, 30);
+                    robot.driveTrain.CmdDrive(2.3, -179, 0.35, 30);
                     currentStage = stage._20_Drop;
                 }
                 break;
             case _20_Drop:
+                if(runtime.milliseconds() > 3800){
+                    robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
+                }
                 if(runtime.milliseconds() > 4200){
                     robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
                     runtime.reset();
@@ -121,7 +124,7 @@ public class AutonLeftBasket extends OpMode {
                 if(runtime.milliseconds() > 500){
                     robot.arm.setCurrentMode(Arm.Mode.PICKUP_GROUND);
                     robot.claw.setCurrentMode(Claw.Mode.WRIST_TO_GROUND);
-                    robot.driveTrain.CmdDrive(15,72,0.35,0);
+                    robot.driveTrain.CmdDrive(11.5,77,0.35,0);
                     runtime.reset();
                     currentStage = stage._40_Pick_Up;
                 }
@@ -136,14 +139,19 @@ public class AutonLeftBasket extends OpMode {
             case _50_Drive_Back:
                 if(runtime.milliseconds() > 500){
                     robot.arm.setCurrentMode(Arm.Mode.BACKDROP_HIGH_BASKET_ARM_ONLY);
-                    robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
-                    robot.driveTrain.CmdDrive(15,-108,0.35,30);  // back up from specimen
+                    //robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
+                    robot.driveTrain.CmdDrive(18,-120,0.35,30);  // back up from specimen
                     runtime.reset();
                     currentStage = stage._60_Drop;
                 }
                 break;
+            case _55_Back_Up:
+                break;
             case _60_Drop:
                 if(runtime.milliseconds() > 3000){
+                    robot.claw.setCurrentMode(Claw.Mode.WRIST_UP);
+                }
+                if(runtime.milliseconds() > 3500){
                     robot.claw.setCurrentMode(Claw.Mode.CLAW_OPEN);
                     runtime.reset();
                     currentStage = stage._70_Drive_To_Block2;
@@ -151,7 +159,17 @@ public class AutonLeftBasket extends OpMode {
                 break;
             case _70_Drive_To_Block2:
                 if(runtime.milliseconds() > 500){
-                    //robot.driveTrain.CmdDrive(13,0,0.35,0);
+                    robot.arm.setCurrentMode(Arm.Mode.PICKUP_GROUND);
+                    robot.claw.setCurrentMode(Claw.Mode.WRIST_TO_GROUND);
+                    robot.driveTrain.CmdDrive(6,20,0.35,0);
+                    runtime.reset();
+                    currentStage = stage._80_Pick_Up2;
+                }
+                break;
+            case _80_Pick_Up2:
+                if(runtime.milliseconds() > 3500){
+                    robot.claw.setCurrentMode(Claw.Mode.CLAW_CLOSE);
+                    runtime.reset();
                     currentStage = stage._200_End;
                 }
                 break;
@@ -240,6 +258,23 @@ public class AutonLeftBasket extends OpMode {
                     currentStage = stage._300_End;
                 }
                 break;*/
+
+            case _90_Drive_Back:
+                break;
+            case _100_Drop:
+                break;
+            case _110_Drive_To_Block3:
+                break;
+            case _120_Pick_Up:
+                break;
+            case _130_Drive_Back:
+                break;
+            case _140_Drop3:
+                break;
+            case _150_Drive_Forward:
+                break;
+            case _160_Park:
+                break;
             case _200_End:
                 if(robot.driveTrain.getCmdComplete()){
                     robot.stop();

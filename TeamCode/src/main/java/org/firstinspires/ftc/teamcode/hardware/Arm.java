@@ -486,10 +486,10 @@ public enum Mode{
     STOP(0,2100000000,0,0,2100000000,0,5);
  */
     START(                          0,  150,0,0,    150,0,5),
-    PICKUP_GROUND(                  200,100,0,200,  100,1,400),
-    PICKUP_WALL(                    60, 100,0,90,    100,0,95),
-    PICKUP_SUBMERSIBLE(             620, 100, 0, 950, 120, 0, 680),
-    PICKUP_SUBMERSIBLE_IDLE(        650, 120,0,  950, 120, 0,680),
+    PICKUP_GROUND(                  200,150,0,200,  150,1,400),
+    PICKUP_WALL(                    60, 150,0,90,    150,0,95),
+    PICKUP_SUBMERSIBLE(             620, 150, 0, 950, 150, 0, 680),
+    PICKUP_SUBMERSIBLE_IDLE(        650, 150,0,  950, 150, 0,680),
     DELIVER_TO_OBSERVATION(         20, 100,0,0,    100,0,695),
     DELIVER_TO_LOW_CHAMBER(         25, 100,0,0,    100,0,5),
     DELIVER_TO_HIGH_CHAMBER(        1920,120,0,540,   200,1,600),

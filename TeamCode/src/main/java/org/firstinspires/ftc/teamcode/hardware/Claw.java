@@ -37,7 +37,7 @@ public class Claw extends BaseHardware {
 
     private final double WristUpPos = 1;
     private final double WristDownPos = 0;
-    private double wristToGroundPosition = 0.65;
+    private double wristToGroundPosition = 0.63;
     private double wristToSubPosition = 0.57;
 
 

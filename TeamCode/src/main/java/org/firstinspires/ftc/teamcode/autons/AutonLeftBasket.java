@@ -124,7 +124,7 @@ public class AutonLeftBasket extends OpMode {
                 if(runtime.milliseconds() > 500){
                     robot.arm.setCurrentMode(Arm.Mode.PICKUP_GROUND);
                     robot.claw.setCurrentMode(Claw.Mode.WRIST_TO_GROUND);
-                    robot.driveTrain.CmdDrive(9,79,0.35,0);
+                    robot.driveTrain.CmdDrive(9,80,0.35,0);
                     runtime.reset();
                     currentStage = stage._40_Pick_Up;
                 }
@@ -164,7 +164,7 @@ public class AutonLeftBasket extends OpMode {
                 if(runtime.milliseconds() > 500){
                     robot.arm.setCurrentMode(Arm.Mode.PICKUP_GROUND);
                     robot.claw.setCurrentMode(Claw.Mode.WRIST_TO_GROUND);
-                    robot.driveTrain.CmdDrive(11.5,-30,0.35,0);
+                    robot.driveTrain.CmdDrive(12,-30,0.35,0);
                     runtime.reset();
                     currentStage = stage._80_Pick_Up2;
                 }
